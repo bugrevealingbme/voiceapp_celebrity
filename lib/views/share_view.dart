@@ -15,13 +15,13 @@ import 'package:share_plus/share_plus.dart';
 import '../core/base_view.dart';
 import '../core/styles/values.dart';
 import '../models/event_data.dart';
-import '../models/list_data.dart';
+import '../models/person_model.dart';
 import '../view_model/share_view_model/share_view_model.dart';
 
 class ShareView extends StatelessWidget {
   final String text;
   final EventData eventData;
-  final Person person;
+  final PersonModel person;
 
   const ShareView(
       {super.key,
@@ -78,7 +78,8 @@ class ShareView extends StatelessWidget {
                         child: SizedBox(
                           width: 48,
                           height: 48,
-                          child: Image.network(person.img, fit: BoxFit.cover),
+                          child: Image.network(person.img ?? '',
+                              fit: BoxFit.cover),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -229,7 +230,7 @@ class ShareView extends StatelessWidget {
                               await Share.shareXFiles(
                                 [
                                   XFile(viewModel.audioFile?.path ?? '',
-                                      name: person.name +
+                                      name: (person.name ?? '') +
                                           Random().nextInt(999).toString())
                                 ],
                               );

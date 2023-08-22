@@ -12,12 +12,7 @@ class ApiService {
   }
 
   Future<Map<String, String>> apiHeader({String? anotherToken}) async {
-    return {
-      'AUTHORIZATION': 'Bearer fd924f8acba64cd8a7c874b88706b9e8',
-      'X-USER-ID': 'WTvk1E2yUzRMCJJEDhbBYrYdVNI3',
-      'accept': 'text/event-stream',
-      'content-type': 'application/json',
-    };
+    return {'package': 'net.metareverse.voiceapp'};
   }
 
   Future<Response?> sendGetRequest({
@@ -67,7 +62,7 @@ class ApiService {
     if (kDebugMode && disableLog != true) {
       log("<<<<<<<<<<<<<<<<<<   >>>>>>>>>>>>>>>>>>>");
       log(
-        "Endpoint: $endPoint,\n postData: ${postData.toString()},\n headers: ${headers.toString()}, queryParameters: ${queryParameters.toString()}",
+        "Endpoint: $endPoint,\n postData: ${postData.toString()},\n headers: null koydum, queryParameters: ${queryParameters.toString()}",
       );
       log("<<<<<<<<<<<<<<<<<<   >>>>>>>>>>>>>>>>>>>");
     }
@@ -76,7 +71,10 @@ class ApiService {
 
       Response response = await dio.post(
         endPoint,
-        data: postEncData,
+        data: json.encode({
+          'action': postEncData,
+          'timestamp': (DateTime.now().millisecondsSinceEpoch / 1000).round()
+        }),
         queryParameters: queryParameters,
         options: Options(headers: headers, contentType: 'application/json'),
       );
@@ -114,7 +112,7 @@ class ApiService {
       //{headers.toString()}
       log("<<<<<<<<<<<<<<<<<<   >>>>>>>>>>>>>>>>>>>");
       log(
-        "Endpoint: $endPoint,\n postData: ${postData.toString()},\n headers: ${headers.toString()}, queryParameters: ${queryParameters.toString()}",
+        "Endpoint: $endPoint,\n postData: ${postData.toString()},\n headers: null koydum, queryParameters: ${queryParameters.toString()}",
       );
       log("<<<<<<<<<<<<<<<<<<   >>>>>>>>>>>>>>>>>>>");
     }

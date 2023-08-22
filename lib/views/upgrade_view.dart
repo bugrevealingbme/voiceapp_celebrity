@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
+import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -28,156 +29,94 @@ class UpgradeView extends StatelessWidget {
         onDispose: (model) => model.dispose(),
         onPageBuilder: (context, viewModel, themeData) => Scaffold(
             backgroundColor: themeData.colorScheme.secondaryBgColor,
+            extendBodyBehindAppBar: true,
             appBar: AppBar(
-              backgroundColor: themeData.colorScheme.secondaryBgColor,
+              backgroundColor: Colors.transparent,
               elevation: 0,
-              title: const Text(
-                'Upgrade to Pro',
+              iconTheme: const IconThemeData(
+                color: Colors.white,
               ),
-              titleTextStyle: TextStyle(
-                  color: themeData.colorScheme.primaryTextColor,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 24),
-              iconTheme: IconThemeData(
-                color: themeData.colorScheme.primaryTextColor,
-              ),
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close)),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        vipTopFeatures("Unlimited Voice Generation",
-                            Icons.all_inclusive_rounded, themeData),
-                        vipTopFeatures("Ad-free Experience",
-                            Icons.ads_click_rounded, themeData),
-                      ],
+            body: Stack(
+              children: [
+                Container(
+                  height: AppSizes.height30 * 1.0821,
+                  alignment: Alignment.topCenter,
+                  decoration: const BoxDecoration(
+                    color: Color(0xfffb7671),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                      image: AssetImage('assets/pro_banner.png'),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 25),
-                    decoration: BoxDecoration(
-                      color: themeData.colorScheme.background,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25)),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              "VoiceAPP",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Container(
-                                decoration: BoxDecoration(
-                                  color: themeData.colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 7, vertical: 2),
-                                child: const Text(
-                                  "Pro",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )),
-                          ],
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        height: AppSizes.height30,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 25),
+                        decoration: BoxDecoration(
+                          color: themeData.colorScheme.background,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(25),
+                              topRight: Radius.circular(25)),
                         ),
-                        const SizedBox(height: 15),
-                        Observer(builder: (context) {
-                          return viewModel.offerings == null
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : Column(
-                                  children: [
-                                    Row(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Text(
+                                  "VoiceAPP",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Container(
+                                    decoration: BoxDecoration(
+                                      color: themeData.colorScheme.primary,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7, vertical: 2),
+                                    child: const Text(
+                                      "Pro",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Observer(builder: (context) {
+                              return viewModel.offerings == null
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Column(
                                       children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              viewModel.selectedP = 'weekly';
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color: viewModel
-                                                                .selectedP ==
-                                                            'weekly'
-                                                        ? themeData
-                                                            .colorScheme.primary
-                                                        : Colors.grey.shade300,
-                                                  )),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5,
-                                                      vertical: 10),
-                                              child: Column(
-                                                children: [
-                                                  const Text(
-                                                    "Weekly",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    (viewModel
-                                                            .offerings
-                                                            ?.current
-                                                            ?.weekly
-                                                            ?.storeProduct
-                                                            .priceString)
-                                                        .toString(),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  const Text(
-                                                    "Cancel anytime",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.grey),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              viewModel.selectedP = 'monthly';
-                                            },
-                                            child: Stack(
-                                              clipBehavior: Clip.none,
-                                              children: [
-                                                Container(
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  viewModel.selectedP =
+                                                      'weekly';
+                                                },
+                                                child: Container(
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -186,23 +125,21 @@ class UpgradeView extends StatelessWidget {
                                                         width: 1,
                                                         color: viewModel
                                                                     .selectedP ==
-                                                                'monthly'
+                                                                'weekly'
                                                             ? themeData
                                                                 .colorScheme
                                                                 .primary
-                                                            : themeData
-                                                                .colorScheme
-                                                                .dividerAllColor,
+                                                            : Colors
+                                                                .grey.shade300,
                                                       )),
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 5,
                                                       vertical: 10),
-                                                  width: double.infinity,
                                                   child: Column(
                                                     children: [
                                                       const Text(
-                                                        "Monthly",
+                                                        "Weekly",
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: TextStyle(
@@ -216,7 +153,7 @@ class UpgradeView extends StatelessWidget {
                                                         (viewModel
                                                                 .offerings
                                                                 ?.current
-                                                                ?.monthly
+                                                                ?.weekly
                                                                 ?.storeProduct
                                                                 .priceString)
                                                             .toString(),
@@ -229,210 +166,302 @@ class UpgradeView extends StatelessWidget {
                                                                     .w600),
                                                       ),
                                                       const SizedBox(height: 5),
-                                                      Text(
-                                                        "~${((viewModel.offerings?.current?.monthly?.storeProduct.price ?? 0) / 4).toStringAsFixed(2)} Weekly",
+                                                      const Text(
+                                                        "Cancel anytime",
                                                         textAlign:
                                                             TextAlign.center,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.grey),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                                Positioned(
-                                                  top: -11,
-                                                  left: 0,
-                                                  right: 0,
-                                                  child: Align(
-                                                    alignment: Alignment.center,
-                                                    child: Container(
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Expanded(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  viewModel.selectedP =
+                                                      'monthly';
+                                                },
+                                                child: Stack(
+                                                  clipBehavior: Clip.none,
+                                                  children: [
+                                                    Container(
                                                       decoration: BoxDecoration(
-                                                        color: themeData
-                                                            .colorScheme
-                                                            .primary,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                      ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: viewModel
+                                                                        .selectedP ==
+                                                                    'monthly'
+                                                                ? themeData
+                                                                    .colorScheme
+                                                                    .primary
+                                                                : themeData
+                                                                    .colorScheme
+                                                                    .dividerAllColor,
+                                                          )),
                                                       padding: const EdgeInsets
                                                           .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 2,
+                                                          horizontal: 5,
+                                                          vertical: 10),
+                                                      width: double.infinity,
+                                                      child: Column(
+                                                        children: [
+                                                          const Text(
+                                                            "Monthly",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Text(
+                                                            (viewModel
+                                                                    .offerings
+                                                                    ?.current
+                                                                    ?.monthly
+                                                                    ?.storeProduct
+                                                                    .priceString)
+                                                                .toString(),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: const TextStyle(
+                                                                fontSize: 19,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 5),
+                                                          Text(
+                                                            "~${((viewModel.offerings?.current?.monthly?.storeProduct.price ?? 0) / 4).toStringAsFixed(2)} Weekly",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .grey),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      child: const Text(
-                                                        "Save % ~15",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
+                                                    ),
+                                                    Positioned(
+                                                      top: -11,
+                                                      left: 0,
+                                                      right: 0,
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: themeData
+                                                                .colorScheme
+                                                                .primary,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        7),
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 2,
+                                                          ),
+                                                          child: const Text(
+                                                            "Save % ~15",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.health_and_safety_rounded,
-                                          size: 14,
-                                          color: themeData
-                                              .colorScheme.secondaryTextColor,
-                                        ),
-                                        const SizedBox(width: 3),
-                                        Text(
-                                          "Payment is secure",
-                                          style: TextStyle(
+                                        const SizedBox(height: 20),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.health_and_safety_rounded,
+                                              size: 14,
                                               color: themeData.colorScheme
                                                   .secondaryTextColor,
-                                              fontSize: 13),
+                                            ),
+                                            const SizedBox(width: 3),
+                                            Text(
+                                              "Payment is secure",
+                                              style: TextStyle(
+                                                  color: themeData.colorScheme
+                                                      .secondaryTextColor,
+                                                  fontSize: 13),
+                                            ),
+                                          ],
                                         ),
+                                        const SizedBox(height: 25),
                                       ],
+                                    );
+                            }),
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: themeData.colorScheme.primary,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: TextButton(
+                                onPressed: () async {
+                                  upgradeFunctionCat(viewModel);
+                                },
+                                child: const Text(
+                                  "Continue",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                "I do later",
+                                style: TextStyle(
+                                  color:
+                                      themeData.colorScheme.secondaryTextColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 125),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Flexible(
+                                  child: InkWell(
+                                    onTap: () => launchUrlString(
+                                        'https://metareverse.net/apps/voice_cloning/privacy.html'),
+                                    child: Text(
+                                      "Privacy policy",
+                                      style: TextStyle(
+                                          color: themeData.colorScheme.primary,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500),
                                     ),
-                                    const SizedBox(height: 25),
-                                  ],
-                                );
-                        }),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: themeData.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: TextButton(
-                            onPressed: () async {
-                              upgradeFunctionCat(viewModel);
-                            },
-                            child: const Text(
-                              "Continue",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "I do later",
-                            style: TextStyle(
-                              color: themeData.colorScheme.secondaryTextColor,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 125),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Flexible(
-                              child: InkWell(
-                                onTap: () => launchUrlString(
-                                    'https://metareverse.net/apps/voice_cloning/privacy.html'),
-                                child: Text(
-                                  "Privacy policy",
-                                  style: TextStyle(
-                                      color: themeData.colorScheme.primary,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                  ),
                                 ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: InkWell(
+                                    onTap: () => launchUrlString(
+                                        'https://vpnverse.net/terms.html'),
+                                    child: Text(
+                                      "Terms of service",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: themeData.colorScheme.primary,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: InkWell(
+                                      onTap: () async {
+                                        SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+
+                                        try {
+                                          CustomerInfo customerInfo =
+                                              await Purchases
+                                                  .restorePurchases();
+
+                                          if (customerInfo
+                                              .activeSubscriptions.isNotEmpty) {
+                                            upgraded.value = true;
+                                            prefs = await SharedPreferences
+                                                .getInstance();
+                                            prefs.setBool("upgraded", true);
+
+                                            Fluttertoast.showToast(
+                                                msg: "Purchase restored");
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "An upgrade was not found");
+
+                                            upgraded.value = false;
+                                            prefs = await SharedPreferences
+                                                .getInstance();
+                                            prefs.setBool("upgraded", false);
+                                          }
+                                        } on PlatformException {
+                                          Fluttertoast.showToast(
+                                              msg: "An upgrade was not found");
+
+                                          upgraded.value = false;
+                                          prefs = await SharedPreferences
+                                              .getInstance();
+                                          prefs.setBool("upgraded", false);
+                                        }
+                                      },
+                                      child: Text(
+                                        "Restore",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color:
+                                                themeData.colorScheme.primary,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              Platform.isIOS
+                                  ? "Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase."
+                                  : "Subscription may be canceled at any time from the Play Store Settings. All prices include applicable local sales taxes. Payment will be charged to Play Store Account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period and identify the cost of the renewal. Subscription may the managed by the user and auto-renewal may be turned off by going to the user's Account Settings after purchase. If a user cancels a subscription purchased from an app on Google Play, Google policy is that the user will not receive a refund for the current billing period, but will continue to receive their subscription content for the remainder of the current billing period, regardless of the cancellation date. The user's cancellation goes into effect after the current billing period has passed.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: themeData.colorScheme.secondaryTextColor
+                                    .withOpacity(0.721),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 11,
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: InkWell(
-                                onTap: () => launchUrlString(
-                                    'https://vpnverse.net/terms.html'),
-                                child: Text(
-                                  "Terms of service",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: themeData.colorScheme.primary,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: InkWell(
-                                  onTap: () async {
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-
-                                    try {
-                                      CustomerInfo customerInfo =
-                                          await Purchases.restorePurchases();
-
-                                      if (customerInfo
-                                          .activeSubscriptions.isNotEmpty) {
-                                        upgraded.value = true;
-                                        prefs = await SharedPreferences
-                                            .getInstance();
-                                        prefs.setBool("upgraded", true);
-
-                                        Fluttertoast.showToast(
-                                            msg: "Purchase restored");
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: "An upgrade was not found");
-
-                                        upgraded.value = false;
-                                        prefs = await SharedPreferences
-                                            .getInstance();
-                                        prefs.setBool("upgraded", false);
-                                      }
-                                    } on PlatformException {
-                                      Fluttertoast.showToast(
-                                          msg: "An upgrade was not found");
-
-                                      upgraded.value = false;
-                                      prefs =
-                                          await SharedPreferences.getInstance();
-                                      prefs.setBool("upgraded", false);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Restore",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: themeData.colorScheme.primary,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                            )
+                            const SizedBox(height: 50),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          Platform.isIOS
-                              ? "Payment will be charged to your Apple ID account at the confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase."
-                              : "Subscription may be canceled at any time from the Play Store Settings. All prices include applicable local sales taxes. Payment will be charged to Play Store Account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period and identify the cost of the renewal. Subscription may the managed by the user and auto-renewal may be turned off by going to the user's Account Settings after purchase. If a user cancels a subscription purchased from an app on Google Play, Google policy is that the user will not receive a refund for the current billing period, but will continue to receive their subscription content for the remainder of the current billing period, regardless of the cancellation date. The user's cancellation goes into effect after the current billing period has passed.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: themeData.colorScheme.secondaryTextColor
-                                .withOpacity(0.721),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                          ),
-                        ),
-                        const SizedBox(height: 50),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             )));
   }
 

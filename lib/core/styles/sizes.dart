@@ -40,6 +40,8 @@ class AppSizes {
   static double width70 = ScreenUtil().screenWidth * .70;
   static double width75 = ScreenUtil().screenWidth * .75;
   static double width85 = ScreenUtil().screenWidth * .85;
+  static double width95 = ScreenUtil().screenWidth * .95;
+  static double width100 = ScreenUtil().screenWidth;
 
   static double pixelRatio = ScreenUtil().pixelRatio ?? 1;
   static double discoverRoomSize = ScreenUtil().screenWidth * .13721;

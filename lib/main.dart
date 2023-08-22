@@ -106,7 +106,7 @@ class MyAppState extends State<MyApp> {
               };
               return widget!;
             },
-            title: 'Voice cloner',
+            title: 'VoiceApp: Celebrity',
             debugShowCheckedModeBanner: false,
             themeMode: _themeMode ?? widget.themeMode,
             theme: ThemeData(

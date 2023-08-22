@@ -13,13 +13,13 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
       Atom(name: 'HomeViewModelBase.celebrities', context: context);
 
   @override
-  List<dynamic> get celebrities {
+  List<PersonModel>? get celebrities {
     _$celebritiesAtom.reportRead();
     return super.celebrities;
   }
 
   @override
-  set celebrities(List<dynamic> value) {
+  set celebrities(List<PersonModel>? value) {
     _$celebritiesAtom.reportWrite(value, super.celebrities, () {
       super.celebrities = value;
     });
@@ -57,12 +57,29 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
+  late final _$openMenuAtom =
+      Atom(name: 'HomeViewModelBase.openMenu', context: context);
+
+  @override
+  bool get openMenu {
+    _$openMenuAtom.reportRead();
+    return super.openMenu;
+  }
+
+  @override
+  set openMenu(bool value) {
+    _$openMenuAtom.reportWrite(value, super.openMenu, () {
+      super.openMenu = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 celebrities: ${celebrities},
 selectedId: ${selectedId},
-tabIndex: ${tabIndex}
+tabIndex: ${tabIndex},
+openMenu: ${openMenu}
     ''';
   }
 }

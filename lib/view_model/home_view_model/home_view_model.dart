@@ -1,7 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:clone_voice/models/list_person_model.dart';
+import 'package:clone_voice/models/person_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,14 +26,19 @@ abstract class HomeViewModelBase with Store {
   late ApiService apiService;
   late SharedPreferences prefs;
 
+  ScrollController gridController = ScrollController();
+
   @observable
-  List celebrities = [];
+  List<PersonModel>? celebrities = [];
 
   @observable
   String selectedId = '';
 
   @observable
   int tabIndex = 0;
+
+  @observable
+  bool openMenu = false;
 
   setContext(BuildContext context) => lcontext = context;
 
@@ -42,24 +48,35 @@ abstract class HomeViewModelBase with Store {
     prefs = await SharedPreferences.getInstance();
 
     celebrities = await getList();
+
+    gridController.addListener(() {
+      if (gridController.position.pixels > 5) {
+        openMenu = true;
+      } else {
+        openMenu = false;
+      }
+    });
   }
 
   dispose() {
     textController.dispose();
   }
 
-  Future<List> getList() async {
-    const String url = 'https://metareverse.net/apps/voice_cloning/list.json';
+  Future<List<PersonModel>?> getList() async {
+    const String url = 'https://apiva.metareverse.net/m1/list-voices';
 
-    Response? response = await apiService.sendGetRequest(
+    Response? response = await apiService.sendPostRequest(
       endPoint: url,
+      postData: {},
       headers: await apiService.apiHeader(),
     );
 
     if (response?.statusCode == HttpStatus.ok) {
-      selectedId = response?.data[0]['id'];
+      final Map<String, dynamic> data = response?.data;
+      final ListPersonModel result = ListPersonModel.fromJson(data);
+      selectedId = result.result?[0].id.toString() ?? '';
 
-      return response?.data;
+      return result.result;
     } else {
       log('Error: ${response?.statusCode}');
       log('Error: ${response?.data}');
@@ -69,43 +86,19 @@ abstract class HomeViewModelBase with Store {
   }
 
   Future<EventData?> postTTS() async {
-    const String url = 'https://play.ht/api/v2/tts';
-
-    final Map<String, dynamic> requestBody = {
-      'quality': 'medium',
-      'output_format': 'mp3',
-      'speed': 1,
-      'sample_rate': 24000,
-      'voice': selectedId,
-      'text': textController.text,
-    };
+    const String url = 'https://apiva.metareverse.net/m1/post-tts';
 
     Response? response = await apiService.sendPostRequest(
       endPoint: url,
-      postData: requestBody,
+      postData: {
+        'selectedId': selectedId,
+        'text': textController.text,
+      },
       headers: await apiService.apiHeader(),
     );
 
-    EventData? eventData;
     if (response?.statusCode == HttpStatus.ok) {
-      final List<String> lines = await response?.data.split('\n');
-
-      for (final line in lines) {
-        if (line.startsWith('data:')) {
-          String newline = line.replaceAll('data:', '');
-
-          try {
-            EventData? temp =
-                EventData.fromJson(jsonDecode(newline.toString()));
-
-            if (temp.progress == 1) {
-              eventData = temp;
-            }
-          } catch (e) {
-            log(response?.data);
-          }
-        }
-      }
+      EventData? eventData = EventData.fromJson(response!.data);
 
       return eventData;
     } else {

@@ -26,6 +26,7 @@ dependencies:
   fluttertoast: ^8.2.2
   url_launcher: ^6.1.12
   purchases_flutter: ^5.6.2
+  freerasp: ^6.2.0
 
 dev_dependencies:
   flutter_test:

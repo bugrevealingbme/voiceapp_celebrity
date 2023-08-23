@@ -1,6 +1,7 @@
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
+import 'package:clone_voice/utils.dart';
 import 'package:clone_voice/utils/empty_behavior.dart';
 import 'package:clone_voice/views/share_view.dart';
 import 'package:clone_voice/views/upgrade_view.dart';
@@ -175,85 +176,105 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                /* ClipOval(
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                    child: Icon(
-                      Icons.translate_rounded,
-                      color: Colors.white,
-                      size: 26,
-                    ),
-                  ),
-                ), */
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppValues.screenPadding),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              AppValues.generalRadius * 1.111),
-                        ),
-                        elevation: 0,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            viewModel.lcontext,
-                            MaterialPageRoute(
-                              builder: (context) => const GeneratingView(),
-                            ));
-
-                        viewModel.postTTS().then((EventData? eventData) {
-                          if (eventData == null) {
-                            Navigator.pop(context);
-
-                            Fluttertoast.showToast(
-                              msg: "An error has occurred.",
-                            );
-                          }
-
-                          if (viewModel.celebrities == null) {
-                            return null;
-                          }
-
-                          PersonModel person = viewModel.celebrities!
-                              .firstWhere((element) =>
-                                  (element.id ?? '').toString() ==
-                                  viewModel.selectedId);
-
-                          return Navigator.pushReplacement(
-                              viewModel.lcontext,
-                              MaterialPageRoute(
-                                builder: (context) => ShareView(
-                                  eventData: eventData ?? EventData(),
-                                  text: viewModel.textController.text,
-                                  person: person,
+                Observer(builder: (_) {
+                  return viewModel.appModded == true
+                      ? Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Invalid Version"),
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      themeData.colorScheme.primary),
+                                  elevation: MaterialStateProperty.all(0),
                                 ),
-                              ));
-                        });
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Generate",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
+                                onPressed: () async {
+                                  await urlLauncher(
+                                      'https://play.google.com/store/apps/details?id=net.metareverse.voiceapp');
+                                },
+                                child: const Text(
+                                  "Play Store",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                          Icon(Icons.chevron_right_outlined, size: 18),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppValues.screenPadding),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      AppValues.generalRadius * 1.111),
+                                ),
+                                elevation: 0,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    viewModel.lcontext,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const GeneratingView(),
+                                    ));
+
+                                viewModel
+                                    .postTTS()
+                                    .then((EventData? eventData) {
+                                  if (eventData == null) {
+                                    Navigator.pop(context);
+
+                                    Fluttertoast.showToast(
+                                      msg: "An error has occurred.",
+                                    );
+                                  }
+
+                                  if (viewModel.celebrities == null) {
+                                    return null;
+                                  }
+
+                                  PersonModel person = viewModel.celebrities!
+                                      .firstWhere((element) =>
+                                          (element.id ?? '').toString() ==
+                                          viewModel.selectedId);
+
+                                  return Navigator.pushReplacement(
+                                      viewModel.lcontext,
+                                      MaterialPageRoute(
+                                        builder: (context) => ShareView(
+                                          eventData: eventData ?? EventData(),
+                                          text: viewModel.textController.text,
+                                          person: person,
+                                        ),
+                                      ));
+                                });
+                              },
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Generate",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15),
+                                  ),
+                                  Icon(Icons.chevron_right_outlined, size: 18),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                }),
                 const SizedBox(height: 25),
                 ValueListenableBuilder(
                     valueListenable: upgraded,

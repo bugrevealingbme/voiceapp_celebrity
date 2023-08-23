@@ -57,12 +57,29 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
+  late final _$appModdedAtom =
+      Atom(name: 'HomeViewModelBase.appModded', context: context);
+
+  @override
+  bool? get appModded {
+    _$appModdedAtom.reportRead();
+    return super.appModded;
+  }
+
+  @override
+  set appModded(bool? value) {
+    _$appModdedAtom.reportWrite(value, super.appModded, () {
+      super.appModded = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 celebrities: ${celebrities},
 selectedId: ${selectedId},
-tabIndex: ${tabIndex}
+tabIndex: ${tabIndex},
+appModded: ${appModded}
     ''';
   }
 }

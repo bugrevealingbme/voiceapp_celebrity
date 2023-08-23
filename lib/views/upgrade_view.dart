@@ -328,17 +328,19 @@ class UpgradeView extends StatelessWidget {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: themeData.colorScheme.primary,
+                                color: themeData.colorScheme.buttonColor,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: TextButton(
                                 onPressed: () async {
                                   upgradeFunctionCat(viewModel);
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Continue",
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                                      fontSize: 16,
+                                      color: AppColors.invert(themeData
+                                          .colorScheme.primaryTextColor)),
                                 ),
                               ),
                             ),

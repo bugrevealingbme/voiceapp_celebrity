@@ -25,7 +25,7 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context) {
     toolbarTextStyle: TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: 15,
-      color: themeData.colorScheme.primary,
+      color: themeData.colorScheme.secondaryTextColor,
     ),
     actions: [
       Row(
@@ -62,9 +62,9 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context) {
                         children: [
                           if (!upgraded) ...[
                             Icon(
-                              Icons.upgrade_rounded,
-                              size: 20,
-                              color: themeData.colorScheme.primary,
+                              Icons.lock_sharp,
+                              size: 16,
+                              color: themeData.colorScheme.secondaryTextColor,
                             ),
                             const SizedBox(width: 5),
                           ],

@@ -9,6 +9,7 @@ class AppColors {
   static const secondaryBgColorDark = Color(0xffe7e7e7);
   static const primaryColor = Color(0xffff5353);
   static const secondaryColor = Color(0xff110637);
+  static const buttonColor = Colors.black;
 
   static const dividerColor = Color(0xfff1f3f4);
   static const dividerTickColor = Color(0xffebedef);

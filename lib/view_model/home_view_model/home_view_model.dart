@@ -87,6 +87,7 @@ abstract class HomeViewModelBase with Store {
       postData: {
         'selectedId': selectedId,
         'text': textController.text,
+        'upgraded': upgraded,
       },
       headers: await apiService.apiHeader(),
     );

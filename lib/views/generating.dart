@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/values.dart';
 import 'package:flutter/material.dart';
@@ -58,26 +60,8 @@ class _GeneratingViewState extends State<GeneratingView>
         iconTheme: IconThemeData(color: themeData.colorScheme.primaryTextColor),
         automaticallyImplyLeading: false,
       ),
-      body: Metaballs(
-        effect: MetaballsEffect.follow(
-          growthFactor: 0.5,
-          smoothing: 1,
-          radius: 1,
-        ),
-        gradient: const LinearGradient(colors: [
-          Color.fromARGB(255, 90, 60, 255),
-          Color.fromARGB(255, 120, 255, 255),
-        ], begin: Alignment.bottomRight, end: Alignment.topLeft),
-        metaballs: 27,
-        animationDuration:
-            const Duration(milliseconds: AppValues.generalDuration),
-        speedMultiplier: 0.33,
-        bounceStiffness: 3,
-        minBallRadius: 1,
-        maxBallRadius: 4,
-        glowRadius: 0.7,
-        glowIntensity: 0.33,
-        child: Padding(
+      body: metaballs(
+        Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: AppValues.screenPadding * 2),
           child: Center(
@@ -154,5 +138,32 @@ class _GeneratingViewState extends State<GeneratingView>
         ),
       ),
     );
+  }
+
+  metaballs(Widget child) {
+    if (Platform.isIOS) {
+      return child;
+    } else {
+      return Metaballs(
+          effect: MetaballsEffect.follow(
+            growthFactor: 0.5,
+            smoothing: 1,
+            radius: 1,
+          ),
+          gradient: const LinearGradient(colors: [
+            Color.fromARGB(255, 90, 60, 255),
+            Color.fromARGB(255, 120, 255, 255),
+          ], begin: Alignment.bottomRight, end: Alignment.topLeft),
+          metaballs: 27,
+          animationDuration:
+              const Duration(milliseconds: AppValues.generalDuration),
+          speedMultiplier: 0.3,
+          bounceStiffness: 3,
+          minBallRadius: 1,
+          maxBallRadius: 4,
+          glowRadius: 0.7,
+          glowIntensity: 0.3,
+          child: child);
+    }
   }
 }

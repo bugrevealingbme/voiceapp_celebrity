@@ -1,3 +1,4 @@
+import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../core/base_view.dart';
@@ -98,10 +100,23 @@ class HomeView extends StatelessWidget {
                         viewModel: viewModel,
                         child: Container(
                           key: GlobalKey(),
+                          foregroundDecoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                themeData.colorScheme.background
+                                    .withOpacity(0.001),
+                                themeData.colorScheme.background
+                                    .withOpacity(0.001),
+                                themeData.colorScheme.background.withOpacity(1),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
                           alignment: Alignment.topCenter,
                           padding: EdgeInsets.zero,
-                          constraints:
-                              BoxConstraints(maxHeight: AppSizes.height15),
+                          constraints: BoxConstraints(
+                              maxHeight: ScreenUtil().screenHeight * .1721),
                           child: Observer(builder: (context) {
                             return getGridView(viewModel, themeData);
                           }),
@@ -205,75 +220,100 @@ class HomeView extends StatelessWidget {
                             ],
                           ),
                         )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppValues.screenPadding),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      AppValues.generalRadius * 1.111),
-                                ),
-                                elevation: 0,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                    viewModel.lcontext,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const GeneratingView(),
-                                    ));
-
-                                viewModel
-                                    .postTTS()
-                                    .then((EventData? eventData) {
-                                  if (eventData == null) {
-                                    Navigator.pop(context);
-
-                                    Fluttertoast.showToast(
-                                      msg: "An error has occurred.",
-                                    );
-                                  }
-
-                                  if (viewModel.celebrities == null) {
-                                    return null;
-                                  }
-
-                                  PersonModel person = viewModel.celebrities!
-                                      .firstWhere((element) =>
-                                          (element.id ?? '').toString() ==
-                                          viewModel.selectedId);
-
-                                  return Navigator.pushReplacement(
-                                      viewModel.lcontext,
-                                      MaterialPageRoute(
-                                        builder: (context) => ShareView(
-                                          eventData: eventData ?? EventData(),
-                                          text: viewModel.textController.text,
-                                          person: person,
-                                        ),
-                                      ));
-                                });
-                              },
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Generate",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
+                      : ValueListenableBuilder(
+                          valueListenable: upgraded,
+                          builder: (context, bool upgraded, child) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppValues.screenPadding),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        themeData.colorScheme.buttonColor,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 50, vertical: 15),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          AppValues.generalRadius * 1.111),
+                                    ),
+                                    elevation: 0,
                                   ),
-                                  Icon(Icons.chevron_right_outlined, size: 18),
-                                ],
+                                  onPressed: upgraded != true
+                                      ? () {
+                                          Navigator.push(
+                                              viewModel.lcontext,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const UpgradeView(),
+                                              ));
+                                        }
+                                      : () {
+                                          Navigator.push(
+                                              viewModel.lcontext,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const GeneratingView(),
+                                              ));
+
+                                          viewModel
+                                              .postTTS()
+                                              .then((EventData? eventData) {
+                                            if (eventData == null) {
+                                              Navigator.pop(context);
+
+                                              Fluttertoast.showToast(
+                                                msg: "An error has occurred.",
+                                              );
+                                            }
+
+                                            if (viewModel.celebrities == null) {
+                                              return null;
+                                            }
+
+                                            PersonModel person = viewModel
+                                                .celebrities!
+                                                .firstWhere((element) =>
+                                                    (element.id ?? '')
+                                                        .toString() ==
+                                                    viewModel.selectedId);
+
+                                            return Navigator.pushReplacement(
+                                                viewModel.lcontext,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ShareView(
+                                                    eventData: eventData ??
+                                                        EventData(),
+                                                    text: viewModel
+                                                        .textController.text,
+                                                    person: person,
+                                                  ),
+                                                ));
+                                          });
+                                        },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Generate",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15,
+                                            color: AppColors.invert(themeData
+                                                .colorScheme.primaryTextColor)),
+                                      ),
+                                      Icon(Icons.chevron_right_outlined,
+                                          size: 18,
+                                          color: AppColors.invert(themeData
+                                              .colorScheme.primaryTextColor)),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
+                            );
+                          });
                 }),
                 const SizedBox(height: 25),
                 ValueListenableBuilder(
@@ -355,7 +395,7 @@ class HomeView extends StatelessWidget {
 }
 
 GridView getGridView(HomeViewModel viewModel, ThemeData themeData,
-    {bool? physc}) {
+    {bool? physc, Function()? close}) {
   return GridView.builder(
     shrinkWrap: true,
     padding: physc == true
@@ -401,6 +441,9 @@ GridView getGridView(HomeViewModel viewModel, ThemeData themeData,
           borderRadius: BorderRadius.circular(50),
           splashColor: Colors.transparent,
           onTap: () {
+            if (close != null) {
+              close();
+            }
             viewModel.selectedId =
                 viewModel.celebrities?[index].id.toString() ?? '';
           },
@@ -572,26 +615,23 @@ class PopupMenuContentState extends State<PopupMenuContent>
                         child: Opacity(opacity: _animation.value, child: child),
                       );
                     },
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: double.maxFinite,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(.1),
-                                blurRadius: 8,
-                              )
-                            ]),
-                        child: ScrollConfiguration(
-                            behavior: EmptyBehavior(),
-                            child:
-                                getGridView(viewModel, themeData, physc: true)),
-                      ),
+                    child: Container(
+                      width: double.maxFinite,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppValues.screenPadding),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.1),
+                              blurRadius: 8,
+                            )
+                          ]),
+                      child: ScrollConfiguration(
+                          behavior: EmptyBehavior(),
+                          child: getGridView(viewModel, themeData,
+                              physc: true, close: _closePopup)),
                     ),
                   ),
                 ),

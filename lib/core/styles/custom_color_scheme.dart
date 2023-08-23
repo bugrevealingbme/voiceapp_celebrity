@@ -8,6 +8,10 @@ extension CustomColorScheme on ColorScheme {
       ? AppColors.primaryColor.withOpacity(0.1)
       : AppColors.primaryColor.withOpacity(0.133);
 
+  Color get buttonColor => brightness == Brightness.light
+      ? AppColors.buttonColor
+      : AppColorsDark.buttonColor;
+
   Color get secondaryBgColor => brightness == Brightness.light
       ? AppColors.secondaryBgColor
       : AppColorsDark.secondaryBgColor;

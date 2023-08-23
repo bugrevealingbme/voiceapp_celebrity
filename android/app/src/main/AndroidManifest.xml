@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="VoiceApp: Celebrity Cloner"
+        android:label="VoiceApp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

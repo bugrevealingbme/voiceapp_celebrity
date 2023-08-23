@@ -45,7 +45,7 @@ class UpgradeView extends StatelessWidget {
             body: Stack(
               children: [
                 Container(
-                  height: AppSizes.height30 * 1.0821,
+                  height: AppSizes.height30 * 1.1821,
                   alignment: Alignment.topCenter,
                   decoration: const BoxDecoration(
                     color: Color(0xfffb7671),
@@ -61,7 +61,7 @@ class UpgradeView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       SizedBox(
-                        height: AppSizes.height30,
+                        height: AppSizes.height30 * 1.1,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(

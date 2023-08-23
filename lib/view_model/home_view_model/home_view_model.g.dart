@@ -57,29 +57,12 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
-  late final _$openMenuAtom =
-      Atom(name: 'HomeViewModelBase.openMenu', context: context);
-
-  @override
-  bool get openMenu {
-    _$openMenuAtom.reportRead();
-    return super.openMenu;
-  }
-
-  @override
-  set openMenu(bool value) {
-    _$openMenuAtom.reportWrite(value, super.openMenu, () {
-      super.openMenu = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
 celebrities: ${celebrities},
 selectedId: ${selectedId},
-tabIndex: ${tabIndex},
-openMenu: ${openMenu}
+tabIndex: ${tabIndex}
     ''';
   }
 }

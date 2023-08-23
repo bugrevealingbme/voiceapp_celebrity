@@ -42,6 +42,7 @@ abstract class ShareViewModelBase with Store {
       await controller.preparePlayer(
         path: audioFile?.path ?? '',
         shouldExtractWaveform: true,
+        volume: 1,
       );
 
       waveformData = await controller.extractWaveformData(

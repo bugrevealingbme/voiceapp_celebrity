@@ -17,6 +17,7 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context) {
     title: const Text(
       'VoiceApp: Celebrity',
     ),
+    centerTitle: false,
     titleTextStyle: TextStyle(
         color: themeData.colorScheme.primaryTextColor,
         fontWeight: FontWeight.w900,

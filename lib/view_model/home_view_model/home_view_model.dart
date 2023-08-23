@@ -26,8 +26,6 @@ abstract class HomeViewModelBase with Store {
   late ApiService apiService;
   late SharedPreferences prefs;
 
-  ScrollController gridController = ScrollController();
-
   @observable
   List<PersonModel>? celebrities = [];
 
@@ -37,9 +35,6 @@ abstract class HomeViewModelBase with Store {
   @observable
   int tabIndex = 0;
 
-  @observable
-  bool openMenu = false;
-
   setContext(BuildContext context) => lcontext = context;
 
   init() async {
@@ -48,14 +43,6 @@ abstract class HomeViewModelBase with Store {
     prefs = await SharedPreferences.getInstance();
 
     celebrities = await getList();
-
-    gridController.addListener(() {
-      if (gridController.position.pixels > 5) {
-        openMenu = true;
-      } else {
-        openMenu = false;
-      }
-    });
   }
 
   dispose() {

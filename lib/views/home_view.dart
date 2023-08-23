@@ -1,6 +1,5 @@
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
-import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
 import 'package:clone_voice/utils.dart';
 import 'package:clone_voice/utils/empty_behavior.dart';

@@ -43,6 +43,9 @@ abstract class HomeViewModelBase with Store {
   @observable
   bool? appModded;
 
+  @observable
+  bool volumeUp = true;
+
   setContext(BuildContext context) => lcontext = context;
 
   init() async {

@@ -73,13 +73,30 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
+  late final _$volumeUpAtom =
+      Atom(name: 'HomeViewModelBase.volumeUp', context: context);
+
+  @override
+  bool get volumeUp {
+    _$volumeUpAtom.reportRead();
+    return super.volumeUp;
+  }
+
+  @override
+  set volumeUp(bool value) {
+    _$volumeUpAtom.reportWrite(value, super.volumeUp, () {
+      super.volumeUp = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 celebrities: ${celebrities},
 selectedId: ${selectedId},
 tabIndex: ${tabIndex},
-appModded: ${appModded}
+appModded: ${appModded},
+volumeUp: ${volumeUp}
     ''';
   }
 }

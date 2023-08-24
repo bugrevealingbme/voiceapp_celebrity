@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
@@ -62,35 +63,54 @@ class HomeView extends StatelessWidget {
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: TabBar(
-                            labelColor: themeData.colorScheme.primaryTextColor,
-                            indicator: BoxDecoration(
-                              color: themeData.colorScheme.secondaryBgColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            isScrollable: true,
-                            physics: const ScrollPhysics(),
-                            indicatorPadding: EdgeInsets.zero,
-                            padding: EdgeInsets.zero,
-                            labelPadding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 0),
-                            labelStyle: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w600),
-                            unselectedLabelColor:
-                                themeData.colorScheme.secondaryTextColor,
-                            onTap: (value) {
-                              viewModel.tabIndex = value;
-                            },
-                            tabs: const [
-                              Tab(
-                                text: "All",
+                          child: Row(
+                            children: [
+                              TabBar(
+                                labelColor:
+                                    themeData.colorScheme.primaryTextColor,
+                                indicator: BoxDecoration(
+                                  color: themeData.colorScheme.secondaryBgColor,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                isScrollable: true,
+                                physics: const ScrollPhysics(),
+                                indicatorPadding: EdgeInsets.zero,
+                                padding: EdgeInsets.zero,
+                                labelPadding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 0),
+                                labelStyle: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w600),
+                                unselectedLabelColor:
+                                    themeData.colorScheme.secondaryTextColor,
+                                onTap: (value) {
+                                  viewModel.tabIndex = value;
+                                },
+                                tabs: const [
+                                  Tab(
+                                    text: "All",
+                                  ),
+                                  Tab(
+                                    text: "Male",
+                                  ),
+                                  Tab(
+                                    text: "Female",
+                                  )
+                                ],
                               ),
-                              Tab(
-                                text: "Male",
-                              ),
-                              Tab(
-                                text: "Female",
-                              )
+                              const Spacer(),
+                              Observer(builder: (_) {
+                                return InkWell(
+                                  onTap: () =>
+                                      viewModel.volumeUp = !viewModel.volumeUp,
+                                  child: Icon(
+                                    viewModel.volumeUp == true
+                                        ? Icons.volume_up_outlined
+                                        : Icons.volume_off_outlined,
+                                    color:
+                                        themeData.colorScheme.primaryTextColor,
+                                  ),
+                                );
+                              }),
                             ],
                           ),
                         ),
@@ -264,6 +284,8 @@ class HomeView extends StatelessWidget {
                                               Fluttertoast.showToast(
                                                 msg: "An error has occurred.",
                                               );
+
+                                              return null;
                                             }
 
                                             if (viewModel.celebrities == null) {
@@ -282,8 +304,7 @@ class HomeView extends StatelessWidget {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       ShareView(
-                                                    eventData: eventData ??
-                                                        EventData(),
+                                                    eventData: eventData,
                                                     text: viewModel
                                                         .textController.text,
                                                     person: person,
@@ -436,6 +457,18 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                 close();
               }
               viewModel.selectedId = personModel.id.toString();
+
+              if (viewModel.volumeUp) {
+                AssetsAudioPlayer.newPlayer().open(
+                  Audio("assets/voices/${personModel.name?.toLowerCase()}.mp3"),
+                  autoStart: true,
+                  showNotification: false,
+                  respectSilentMode: false,
+                  playSpeed: 1,
+                  loopMode: LoopMode.none,
+                  volume: 1,
+                );
+              }
             },
             child: Column(
               children: [

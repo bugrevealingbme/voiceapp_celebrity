@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'core/styles/values.dart';
 
-AppBar mainAppbar(ThemeData themeData, BuildContext context) {
+AppBar mainAppbar(ThemeData themeData, BuildContext context, {String? title}) {
   return AppBar(
     elevation: 0,
     titleSpacing: AppValues.screenPadding,
@@ -14,8 +14,8 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context) {
     actionsIconTheme:
         IconThemeData(color: themeData.colorScheme.primaryTextColor),
     iconTheme: IconThemeData(color: themeData.colorScheme.primaryTextColor),
-    title: const Text(
-      'VoiceApp: Celebrity',
+    title: Text(
+      title ?? 'VoiceApp: Celebrity',
     ),
     centerTitle: false,
     titleTextStyle: TextStyle(

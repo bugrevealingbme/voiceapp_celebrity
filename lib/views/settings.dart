@@ -1,6 +1,7 @@
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../core/styles/colors.dart';
 import '../core/styles/values.dart';
@@ -148,6 +149,25 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
                         horizontalTitleGap: 0,
                         leading: Icon(Icons.description_rounded,
+                            color: themeData.colorScheme.primary, size: 22),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          final Uri emailLaunchUri = Uri(
+                            scheme: 'mailto',
+                            path: 'info@metareverse.net',
+                          );
+
+                          launchUrl(emailLaunchUri);
+                        },
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 0),
+                        title: const Text(
+                          "Contact Us",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        horizontalTitleGap: 0,
+                        leading: Icon(Icons.email,
                             color: themeData.colorScheme.primary, size: 22),
                       ),
                     ],

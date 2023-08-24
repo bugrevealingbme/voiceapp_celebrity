@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/globals.dart';
@@ -116,9 +117,7 @@ class HomeView extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           constraints: BoxConstraints(
                               maxHeight: ScreenUtil().screenHeight * .1721),
-                          child: Observer(builder: (context) {
-                            return getGridView(viewModel, themeData);
-                          }),
+                          child: getGridView(viewModel, themeData),
                         ),
                       ),
                     ],
@@ -299,14 +298,10 @@ class HomeView extends StatelessWidget {
                                         "Generate",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             color: AppColors.invert(themeData
                                                 .colorScheme.primaryTextColor)),
                                       ),
-                                      Icon(Icons.chevron_right_outlined,
-                                          size: 18,
-                                          color: AppColors.invert(themeData
-                                              .colorScheme.primaryTextColor)),
                                     ],
                                   ),
                                 ),
@@ -393,102 +388,99 @@ class HomeView extends StatelessWidget {
   }
 }
 
-GridView getGridView(HomeViewModel viewModel, ThemeData themeData,
+Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
     {bool? physc, Function()? close}) {
-  return GridView.builder(
-    shrinkWrap: true,
-    padding: physc == true
-        ? const EdgeInsets.symmetric(vertical: 20)
-        : EdgeInsets.zero,
-    primary: false,
-    itemCount: viewModel.celebrities?.length ?? 0,
-    physics: physc == true
-        ? const BouncingScrollPhysics()
-        : const NeverScrollableScrollPhysics(),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
-      crossAxisSpacing: 5,
-      mainAxisSpacing: 0,
-    ),
-    itemBuilder: (context, index) {
-      return Observer(builder: (_) {
-        String? gender;
-        if (viewModel.tabIndex == 1) {
-          gender = "male";
-        } else if (viewModel.tabIndex == 2) {
-          gender = "female";
-        } else {
-          gender = null;
-        }
+  return Observer(builder: (_) {
+    List<PersonModel> temp = [];
+    temp.addAll(viewModel.celebrities ?? []);
 
-        if (gender != null && gender != viewModel.celebrities?[index].gender) {
-          return Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 2),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: themeData.colorScheme.secondaryBgColorLight,
-              ),
-            ),
-          );
-        }
+    String? gender;
 
-        return InkWell(
-          borderRadius: BorderRadius.circular(50),
-          splashColor: Colors.transparent,
-          onTap: () {
-            if (close != null) {
-              close();
-            }
-            viewModel.selectedId =
-                viewModel.celebrities?[index].id.toString() ?? '';
-          },
-          child: Column(
-            children: [
-              Flexible(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  padding: EdgeInsets.all(index == 0 ? 2 : 2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(
-                        color: viewModel.selectedId ==
-                                viewModel.celebrities?[index].id.toString()
-                            ? themeData.colorScheme.primary
-                            : Colors.transparent,
-                        width: 2),
-                  ),
-                  child: ClipOval(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: viewModel.celebrities?[index].img != null &&
-                                viewModel.celebrities?[index].img != ""
-                            ? DecorationImage(
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.9721),
-                                    BlendMode.dstATop),
-                                alignment: Alignment.center,
-                                image: NetworkImage(
-                                  viewModel.celebrities?[index].img ?? '',
-                                ),
-                                fit: BoxFit.cover,
-                              )
-                            : null,
-                        color: Colors.grey,
+    if (viewModel.tabIndex == 1) {
+      gender = "male";
+    } else if (viewModel.tabIndex == 2) {
+      gender = "female";
+    } else {
+      gender = null;
+    }
+
+    if (gender != null) {
+      temp.removeWhere((element) => element.gender != gender);
+    }
+
+    return GridView.builder(
+      shrinkWrap: true,
+      controller: viewModel.gridController,
+      padding: physc == true
+          ? const EdgeInsets.symmetric(vertical: 20)
+          : EdgeInsets.zero,
+      primary: false,
+      itemCount: temp.length,
+      physics: physc == true
+          ? const BouncingScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 0,
+      ),
+      itemBuilder: (context, index) {
+        return Observer(builder: (_) {
+          PersonModel personModel = temp[index];
+          return InkWell(
+            borderRadius: BorderRadius.circular(50),
+            splashColor: Colors.transparent,
+            onTap: () {
+              viewModel.scrollToIndex(index);
+              if (close != null) {
+                close();
+              }
+              viewModel.selectedId = personModel.id.toString();
+            },
+            child: Column(
+              children: [
+                Flexible(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    padding: EdgeInsets.all(index == 0 ? 2 : 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(
+                          color:
+                              viewModel.selectedId == personModel.id.toString()
+                                  ? themeData.colorScheme.primary
+                                  : Colors.transparent,
+                          width: 2),
+                    ),
+                    child: ClipOval(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image:
+                              personModel.img != null && personModel.img != ""
+                                  ? DecorationImage(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.9721),
+                                          BlendMode.dstATop),
+                                      alignment: Alignment.center,
+                                      image: CachedNetworkImageProvider(
+                                        personModel.img ?? '',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      });
-    },
-  );
+              ],
+            ),
+          );
+        });
+      },
+    );
+  });
 }
 
 class MyPopupMenu extends StatefulWidget {
@@ -619,7 +611,7 @@ class PopupMenuContentState extends State<PopupMenuContent>
                       padding: const EdgeInsets.symmetric(
                           horizontal: AppValues.screenPadding),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: themeData.colorScheme.background,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
@@ -629,8 +621,62 @@ class PopupMenuContentState extends State<PopupMenuContent>
                           ]),
                       child: ScrollConfiguration(
                           behavior: EmptyBehavior(),
-                          child: getGridView(viewModel, themeData,
-                              physc: true, close: _closePopup)),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 15),
+                              DefaultTabController(
+                                length: 3,
+                                initialIndex: viewModel.tabIndex,
+                                child: Theme(
+                                  data: ThemeData(
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: TabBar(
+                                      labelColor: themeData
+                                          .colorScheme.primaryTextColor,
+                                      indicator: BoxDecoration(
+                                        color: themeData
+                                            .colorScheme.secondaryBgColor,
+                                        borderRadius: BorderRadius.circular(50),
+                                      ),
+                                      isScrollable: true,
+                                      physics: const ScrollPhysics(),
+                                      indicatorPadding: EdgeInsets.zero,
+                                      padding: EdgeInsets.zero,
+                                      labelPadding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 0),
+                                      labelStyle: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                      unselectedLabelColor: themeData
+                                          .colorScheme.secondaryTextColor,
+                                      onTap: (value) {
+                                        viewModel.tabIndex = value;
+                                      },
+                                      tabs: const [
+                                        Tab(
+                                          text: "All",
+                                        ),
+                                        Tab(
+                                          text: "Male",
+                                        ),
+                                        Tab(
+                                          text: "Female",
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                child: getGridView(viewModel, themeData,
+                                    physc: true, close: _closePopup),
+                              ),
+                            ],
+                          )),
                     ),
                   ),
                 ),

@@ -7,6 +7,7 @@ import 'package:clone_voice/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:mobx/mobx.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' hide Store;
@@ -27,6 +28,8 @@ abstract class HomeViewModelBase with Store {
   late BuildContext lcontext;
   late ApiService apiService;
   late SharedPreferences prefs;
+
+  final ScrollController gridController = ScrollController();
 
   @observable
   List<PersonModel>? celebrities = [];
@@ -54,6 +57,26 @@ abstract class HomeViewModelBase with Store {
 
   dispose() {
     textController.dispose();
+  }
+
+  int roundDownToNearest5(int number) {
+    if (number <= 0) {
+      return 0;
+    } else {
+      int quotient = (number / 4).floor();
+      return quotient * 4;
+    }
+  }
+
+  void scrollToIndex(int index) {
+    double itemExtent = ScreenUtil().screenHeight * .026;
+    double offset = (roundDownToNearest5(index)) * (itemExtent);
+
+    gridController.animateTo(
+      offset,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   Future<List<PersonModel>?> getList() async {
@@ -87,7 +110,7 @@ abstract class HomeViewModelBase with Store {
       postData: {
         'selectedId': selectedId,
         'text': textController.text,
-        'upgraded': upgraded,
+        'upgraded': upgraded.value,
       },
       headers: await apiService.apiHeader(),
     );
@@ -109,8 +132,14 @@ abstract class HomeViewModelBase with Store {
       await Purchases.setLogLevel(LogLevel.debug);
 
       PurchasesConfiguration configuration;
-      configuration =
-          PurchasesConfiguration('goog_FslAAyswspbksQeQBUCQhLvCyuL');
+      if (Platform.isIOS) {
+        configuration =
+            PurchasesConfiguration('appl_hTameyDUfQuHUmjeBuBewMBhryW');
+      } else {
+        configuration =
+            PurchasesConfiguration('goog_FslAAyswspbksQeQBUCQhLvCyuL');
+      }
+
       await Purchases.configure(configuration);
 
       CustomerInfo customerInfo = await Purchases.getCustomerInfo();

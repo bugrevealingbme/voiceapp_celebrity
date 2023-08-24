@@ -93,7 +93,9 @@ class ApiService {
                 e.response?.statusCode == HttpStatus.unauthorized ||
                 e.response?.statusCode == HttpStatus.internalServerError
             ? 'not_found'
-            : e.response?.data['message'];
+            : e.response?.data != null
+                ? e.response?.data['message']
+                : e.response?.data;
         log("Endpoint $endPoint, response: $message}, statusCode: ${e.response?.statusCode}");
         log("<<<<<<<<<<<<<<<<<<   >>>>>>>>>>>>>>>>>>>");
       }

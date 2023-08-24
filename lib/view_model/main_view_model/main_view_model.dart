@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'package:clone_voice/views/generated_before_view.dart';
 import 'package:clone_voice/views/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -34,7 +35,7 @@ abstract class MainViewModelBase with Store {
   init() {
     viewList = const [
       HomeView(),
-      SizedBox(),
+      GeneratedBeforeView(),
       SettingsPage(),
     ];
   }

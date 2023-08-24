@@ -25,7 +25,7 @@ class _GeneratingViewState extends State<GeneratingView>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 18),
+      duration: const Duration(seconds: 23),
     );
 
     _animation = Tween<double>(

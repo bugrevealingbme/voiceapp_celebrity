@@ -34,9 +34,9 @@ main() async {
   upgraded.value = prefs.getBool("upgraded") ?? false;
 
   //
-  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  OneSignal.shared.setAppId("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
-  OneSignal.shared.promptUserForPushNotificationPermission();
+  OneSignal.Debug.setLogLevel(OSLogLevel.none);
+  OneSignal.initialize("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
+  OneSignal.Notifications.requestPermission(true);
   //
 
   //color and theme

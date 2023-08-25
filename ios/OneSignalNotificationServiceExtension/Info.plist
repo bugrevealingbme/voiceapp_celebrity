@@ -8,6 +8,10 @@
 		<string>com.apple.usernotifications.service</string>
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationService</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Microphone access permission required to transcribe your voice</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>This app will use your location to show features near you</string>
 	</dict>
 </dict>
 </plist>

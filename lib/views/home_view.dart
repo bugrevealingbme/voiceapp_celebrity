@@ -460,7 +460,8 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
 
               if (viewModel.volumeUp) {
                 AssetsAudioPlayer.newPlayer().open(
-                  Audio("assets/voices/${personModel.name?.toLowerCase()}.mp3"),
+                  Audio(
+                      "assets/voices/${personModel.name?.replaceAll(' ', '_').toLowerCase()}.mp3"),
                   autoStart: true,
                   showNotification: false,
                   respectSilentMode: false,

@@ -109,14 +109,22 @@ class UpgradeView extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             Observer(builder: (context) {
-                              bool trialAvaible = viewModel
-                                          .offerings
-                                          ?.current
-                                          ?.monthly
-                                          ?.storeProduct
-                                          .defaultOption
-                                          ?.freePhase !=
-                                      null &&
+                              bool trialAvaible = (viewModel
+                                              .offerings
+                                              ?.current
+                                              ?.monthly
+                                              ?.storeProduct
+                                              .defaultOption
+                                              ?.freePhase !=
+                                          null ||
+                                      viewModel
+                                              .offerings
+                                              ?.current
+                                              ?.monthly
+                                              ?.storeProduct
+                                              .introductoryPrice
+                                              ?.price ==
+                                          0) &&
                                   viewModel.selectedP == 'monthly';
 
                               return viewModel.offerings == null

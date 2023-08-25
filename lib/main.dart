@@ -5,6 +5,7 @@ import 'package:clone_voice/views/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,16 +33,11 @@ main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   upgraded.value = prefs.getBool("upgraded") ?? false;
 
-/* //Remove this method to stop OneSignal Debugging
+  //
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-
-  OneSignal.shared.setAppId("a839097a-57ca-41a9-b451-46babd362879");
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-  OneSignal.shared
-      .promptUserForPushNotificationPermission()
-      .then((accepted) {});
-  // */
+  OneSignal.shared.setAppId("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
+  OneSignal.shared.promptUserForPushNotificationPermission();
+  //
 
   //color and theme
   MaterialColor primaryColor =

@@ -112,8 +112,8 @@ class UpgradeView extends StatelessWidget {
                               bool trialAvaible = viewModel
                                           .offerings
                                           ?.current
-                                          ?.monthly!
-                                          .storeProduct
+                                          ?.monthly
+                                          ?.storeProduct
                                           .defaultOption
                                           ?.freePhase !=
                                       null &&

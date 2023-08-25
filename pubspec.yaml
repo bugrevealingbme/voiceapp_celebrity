@@ -1,7 +1,7 @@
 name: clone_voice
 description: A new Flutter project.
 publish_to: "none"
-version: 1.0.0+7
+version: 1.0.0+8
 
 environment:
   sdk: ">=3.0.6 <4.0.0"
@@ -29,6 +29,7 @@ dependencies:
   freerasp: ^6.2.0
   assets_audio_player: ^3.1.0
   shimmer: ^3.0.0
+  onesignal_flutter: ^3.5.1
 
 dev_dependencies:
   flutter_test:

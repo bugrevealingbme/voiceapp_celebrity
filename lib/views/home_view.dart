@@ -478,7 +478,7 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                     duration: const Duration(milliseconds: 100),
                     padding: EdgeInsets.all(index == 0 ? 2 : 2),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(500),
                       border: Border.all(
                           color:
                               viewModel.selectedId == personModel.id.toString()

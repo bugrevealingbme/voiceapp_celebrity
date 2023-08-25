@@ -9,6 +9,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../core/base_view.dart';
@@ -44,15 +45,21 @@ class UpgradeView extends StatelessWidget {
             ),
             body: Stack(
               children: [
-                Container(
-                  height: AppSizes.height30 * 1.1821,
-                  alignment: Alignment.topCenter,
-                  decoration: const BoxDecoration(
-                    color: Color(0xfffb7671),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                      image: AssetImage('assets/pro_banner.png'),
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                    themeData.colorScheme.primary,
+                    BlendMode.color,
+                  ),
+                  child: Container(
+                    height: AppSizes.height30 * 1.1821,
+                    alignment: Alignment.topCenter,
+                    decoration: const BoxDecoration(
+                      color: Color(0xfffb7671),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                        image: AssetImage('assets/pro_banner.png'),
+                      ),
                     ),
                   ),
                 ),
@@ -102,6 +109,16 @@ class UpgradeView extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             Observer(builder: (context) {
+                              bool trialAvaible = viewModel
+                                          .offerings
+                                          ?.current
+                                          ?.monthly!
+                                          .storeProduct
+                                          .defaultOption
+                                          ?.freePhase !=
+                                      null &&
+                                  viewModel.selectedP == 'monthly';
+
                               return viewModel.offerings == null
                                   ? const Center(
                                       child: CircularProgressIndicator(),
@@ -235,25 +252,54 @@ class UpgradeView extends StatelessWidget {
                                                                 .toString(),
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: const TextStyle(
-                                                                fontSize: 19,
-                                                                fontWeight:
-                                                                    FontWeight
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                    trialAvaible
+                                                                        ? 16
+                                                                        : 19,
+                                                                color: trialAvaible
+                                                                    ? themeData
+                                                                        .colorScheme
+                                                                        .secondaryTextColor
+                                                                    : null,
+                                                                decoration: trialAvaible
+                                                                    ? TextDecoration
+                                                                        .lineThrough
+                                                                    : null,
+                                                                fontWeight: trialAvaible
+                                                                    ? FontWeight
+                                                                        .w500
+                                                                    : FontWeight
                                                                         .w600),
                                                           ),
                                                           const SizedBox(
                                                               height: 5),
-                                                          Text(
-                                                            "~${((viewModel.offerings?.current?.monthly?.storeProduct.price ?? 0) / 4).toStringAsFixed(2)} Weekly",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style:
-                                                                const TextStyle(
+                                                          trialAvaible
+                                                              ? const Text(
+                                                                  "3 Days Free Trial",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      TextStyle(
                                                                     fontSize:
-                                                                        12,
-                                                                    color: Colors
-                                                                        .grey),
-                                                          ),
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                  ),
+                                                                )
+                                                              : Text(
+                                                                  "~${((viewModel.offerings?.current?.monthly?.storeProduct.price ?? 0) / 4).toStringAsFixed(2)} Weekly",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .grey),
+                                                                ),
                                                         ],
                                                       ),
                                                     ),
@@ -281,9 +327,12 @@ class UpgradeView extends StatelessWidget {
                                                             horizontal: 10,
                                                             vertical: 2,
                                                           ),
-                                                          child: const Text(
-                                                            "Save % ~15",
-                                                            style: TextStyle(
+                                                          child: Text(
+                                                            trialAvaible
+                                                                ? "Free!"
+                                                                : "Save ~15%",
+                                                            style:
+                                                                const TextStyle(
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 12,
@@ -319,31 +368,74 @@ class UpgradeView extends StatelessWidget {
                                                       .secondaryTextColor,
                                                   fontSize: 13),
                                             ),
+                                            Container(
+                                              width: 1.721,
+                                              height: 1.721,
+                                              color: themeData.colorScheme
+                                                  .secondaryTextColor,
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5),
+                                            ),
+                                            Text(
+                                              "No hidden costs",
+                                              style: TextStyle(
+                                                  color: themeData.colorScheme
+                                                      .secondaryTextColor,
+                                                  fontSize: 13),
+                                            ),
                                           ],
                                         ),
-                                        const SizedBox(height: 25),
+                                        const SizedBox(height: 20),
+                                        Stack(
+                                          children: [
+                                            Shimmer.fromColors(
+                                              baseColor: themeData
+                                                  .colorScheme.buttonColor,
+                                              highlightColor: themeData
+                                                  .colorScheme.buttonColor
+                                                  .withOpacity(0.721),
+                                              period: const Duration(
+                                                  milliseconds: 1000),
+                                              child: Container(
+                                                width: double.infinity,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  color: themeData
+                                                      .colorScheme.buttonColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              child: TextButton(
+                                                onPressed: () async {
+                                                  upgradeFunctionCat(viewModel);
+                                                },
+                                                child: Text(
+                                                  trialAvaible
+                                                      ? "Start Free Trial Now!"
+                                                      : "Continue",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: AppColors.invert(
+                                                          themeData.colorScheme
+                                                              .primaryTextColor)),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     );
                             }),
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: themeData.colorScheme.buttonColor,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: TextButton(
-                                onPressed: () async {
-                                  upgradeFunctionCat(viewModel);
-                                },
-                                child: Text(
-                                  "Continue",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: AppColors.invert(themeData
-                                          .colorScheme.primaryTextColor)),
-                                ),
-                              ),
-                            ),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
@@ -491,12 +583,12 @@ class UpgradeView extends StatelessWidget {
         } on PlatformException catch (e) {
           var errorCode = PurchasesErrorHelper.getErrorCode(e);
           if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-            Fluttertoast.showToast(msg: "Error!");
+            Fluttertoast.showToast(msg: "Payment failed!");
           }
         }
       }
     } on PlatformException {
-      Fluttertoast.showToast(msg: "Error!");
+      Fluttertoast.showToast(msg: "Payment failed!");
     }
   }
 

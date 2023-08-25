@@ -207,6 +207,7 @@ class SettingsPageState extends State<SettingsPage> {
                             colorPicker(Colors.teal),
                             colorPicker(Colors.purpleAccent),
                             colorPicker(Colors.yellow.shade900),
+                            colorPicker(Colors.brown),
                           ],
                         ),
                       ),

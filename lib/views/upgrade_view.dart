@@ -590,8 +590,12 @@ class UpgradeView extends StatelessWidget {
           }
         } on PlatformException catch (e) {
           var errorCode = PurchasesErrorHelper.getErrorCode(e);
-          if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+          if (errorCode != PurchasesErrorCode.purchaseCancelledError &&
+              errorCode != PurchasesErrorCode.operationAlreadyInProgressError) {
             Fluttertoast.showToast(msg: "Payment failed!");
+          }
+          if (errorCode == PurchasesErrorCode.operationAlreadyInProgressError) {
+            Fluttertoast.showToast(msg: "Process in progress, please wait...");
           }
         }
       }

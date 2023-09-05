@@ -666,7 +666,7 @@ class PopupMenuContentState extends State<PopupMenuContent>
                             children: [
                               const SizedBox(height: 15),
                               DefaultTabController(
-                                length: 3,
+                                length: 4,
                                 initialIndex: viewModel.tabIndex,
                                 child: Theme(
                                   data: ThemeData(

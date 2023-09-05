@@ -4,9 +4,13 @@ import 'colors.dart';
 import 'colors_dark.dart';
 
 extension CustomColorScheme on ColorScheme {
+  Color get primaryColor => brightness == Brightness.light
+      ? AppColors.primaryColor
+      : AppColorsDark.primaryColor;
+
   Color get primaryColorLite => brightness == Brightness.light
       ? AppColors.primaryColor.withOpacity(0.1)
-      : AppColors.primaryColor.withOpacity(0.133);
+      : AppColorsDark.primaryColor.withOpacity(0.133);
 
   Color get buttonColor => brightness == Brightness.light
       ? AppColors.buttonColor

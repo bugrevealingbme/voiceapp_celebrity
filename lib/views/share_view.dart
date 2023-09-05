@@ -57,7 +57,7 @@ class ShareView extends StatelessWidget {
           toolbarTextStyle: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,
-            color: themeData.colorScheme.primary,
+            color: themeData.colorScheme.secondaryColor,
           ),
         ),
         body: DefaultTabController(
@@ -145,7 +145,7 @@ class ShareView extends StatelessWidget {
                           waveformData: viewModel.waveformData,
                           playerWaveStyle: PlayerWaveStyle(
                             fixedWaveColor: Colors.black,
-                            liveWaveColor: themeData.colorScheme.primary,
+                            liveWaveColor: themeData.colorScheme.secondaryColor,
                             seekLineColor: AppColors.invert(
                                     themeData.colorScheme.background)
                                 .withOpacity(0.11),

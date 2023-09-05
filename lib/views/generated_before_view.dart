@@ -41,7 +41,7 @@ class GeneratedBeforeView extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Flexible(
@@ -50,8 +50,8 @@ class GeneratedBeforeView extends StatelessWidget {
                       children: [
                         ClipOval(
                           child: Container(
-                            width: 38,
-                            height: 38,
+                            width: 42,
+                            height: 42,
                             decoration: BoxDecoration(
                               image: viewModel.generatedBefore?[index].voice
                                               ?.img !=
@@ -130,7 +130,7 @@ class GeneratedBeforeView extends StatelessWidget {
                               child: Icon(
                                 play == true ? Icons.stop : Icons.play_arrow,
                                 color: Colors.white,
-                                size: 22,
+                                size: 24,
                               ),
                             ),
                           ),

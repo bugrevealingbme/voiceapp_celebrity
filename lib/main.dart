@@ -34,33 +34,24 @@ main() async {
   upgraded.value = prefs.getBool("upgraded") ?? false;
 
   //
-  OneSignal.Debug.setLogLevel(OSLogLevel.none);
-  OneSignal.initialize("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
-  OneSignal.Notifications.requestPermission(true);
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  OneSignal.shared.setAppId("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
+  OneSignal.shared.promptUserForPushNotificationPermission();
   //
 
   //color and theme
-  MaterialColor primaryColor =
-      AppColors.createMaterialColor(AppColors.primaryColor);
   ThemeMode themeMode = ThemeMode.system;
-
-  primaryColor = AppColors.createMaterialColor(
-      Color(prefs.getInt("wcolor") ?? AppColors.primaryColor.value));
-  //
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) => runApp(MyApp(
             themeMode: themeMode,
-            primaryColor: primaryColor,
           )));
 }
 
 class MyApp extends StatefulWidget {
   final ThemeMode themeMode;
-  final MaterialColor primaryColor;
 
-  const MyApp({Key? key, required this.themeMode, required this.primaryColor})
-      : super(key: key);
+  const MyApp({Key? key, required this.themeMode}) : super(key: key);
 
   @override
   State<MyApp> createState() => MyAppState();
@@ -71,17 +62,10 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   ThemeMode? _themeMode;
-  MaterialColor? _primaryColor;
 
   void changeTheme(ThemeMode lthemeMode) {
     setState(() {
       _themeMode = lthemeMode;
-    });
-  }
-
-  void changeColor(MaterialColor lprimaryColor) {
-    setState(() {
-      _primaryColor = lprimaryColor;
     });
   }
 
@@ -106,7 +90,8 @@ class MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             themeMode: _themeMode ?? widget.themeMode,
             theme: ThemeData(
-              primarySwatch: _primaryColor ?? widget.primaryColor,
+              primarySwatch:
+                  AppColors.createMaterialColor(AppColors.primaryColor),
               appBarTheme: const AppBarTheme(
                 foregroundColor: Colors.white,
                 systemOverlayStyle: SystemUiOverlayStyle(
@@ -117,7 +102,8 @@ class MyAppState extends State<MyApp> {
                 ),
               ),
               colorScheme: ColorScheme.fromSwatch(
-                      primarySwatch: _primaryColor ?? widget.primaryColor,
+                      primarySwatch:
+                          AppColors.createMaterialColor(AppColors.primaryColor),
                       brightness: Brightness.light,
                       backgroundColor: AppColors.bgColor)
                   .copyWith(background: AppColors.bgColor),
@@ -153,7 +139,8 @@ class MyAppState extends State<MyApp> {
               ),
             ),
             darkTheme: ThemeData(
-                primarySwatch: _primaryColor ?? widget.primaryColor,
+                primarySwatch:
+                    AppColors.createMaterialColor(AppColorsDark.primaryColor),
                 dividerColor: AppColorsDark.dividerAll,
                 brightness: Brightness.dark,
                 canvasColor: AppColorsDark.bgColor,
@@ -198,7 +185,8 @@ class MyAppState extends State<MyApp> {
                   ),
                 ),
                 colorScheme: ColorScheme.fromSwatch(
-                        primarySwatch: _primaryColor ?? widget.primaryColor,
+                        primarySwatch: AppColors.createMaterialColor(
+                            AppColorsDark.primaryColor),
                         brightness: Brightness.dark,
                         backgroundColor: AppColorsDark.bgColor)
                     .copyWith(background: AppColorsDark.bgColor)),

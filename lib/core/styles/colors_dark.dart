@@ -5,8 +5,8 @@ class AppColorsDark {
   static const secondaryBgColor = Color(0xff303134);
   static const secondaryBgColorLight = Color(0xff3c4043);
   static const secondaryBgColorDark = Color(0xff4d5154);
-  static const primaryColor = Color(0xffff5353);
-  static const secondaryColor = Colors.white;
+  static const primaryColor = Color(0xfff3f4f6);
+  static const secondaryColor = Color(0xff4b8ae6);
   static const buttonColor = Color(0xfff3f4f6);
 
   static const primaryTextColor = Color(0xffe8eaed);

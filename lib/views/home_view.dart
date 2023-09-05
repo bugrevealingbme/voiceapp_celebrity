@@ -39,7 +39,7 @@ class HomeView extends StatelessWidget {
         backgroundColor: themeData.colorScheme.background,
         appBar: mainAppbar(themeData, context),
         body: DefaultTabController(
-          length: 3,
+          length: 4,
           child: SingleChildScrollView(
             padding: EdgeInsets.zero,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -94,6 +94,9 @@ class HomeView extends StatelessWidget {
                                   ),
                                   Tab(
                                     text: "Female",
+                                  ),
+                                  Tab(
+                                    text: "CGI",
                                   )
                                 ],
                               ),
@@ -387,12 +390,14 @@ class HomeView extends StatelessWidget {
                                       padding: const EdgeInsets.all(7),
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color:
-                                                themeData.colorScheme.primary),
+                                            width: 1.33,
+                                            color: themeData
+                                                .colorScheme.secondaryColor),
                                         borderRadius: BorderRadius.circular(50),
                                       ),
                                       child: Icon(Icons.upgrade_rounded,
-                                          color: themeData.colorScheme.primary),
+                                          color: themeData
+                                              .colorScheme.secondaryColor),
                                     ),
                                   ],
                                 ),
@@ -421,6 +426,8 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
       gender = "male";
     } else if (viewModel.tabIndex == 2) {
       gender = "female";
+    } else if (viewModel.tabIndex == 3) {
+      gender = "cgi";
     } else {
       gender = null;
     }
@@ -484,7 +491,7 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                               viewModel.selectedId == personModel.id.toString()
                                   ? themeData.colorScheme.primary
                                   : Colors.transparent,
-                          width: 2),
+                          width: 1.5),
                     ),
                     child: ClipOval(
                       child: Container(
@@ -699,6 +706,9 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                         ),
                                         Tab(
                                           text: "Female",
+                                        ),
+                                        Tab(
+                                          text: "CGI",
                                         )
                                       ],
                                     ),

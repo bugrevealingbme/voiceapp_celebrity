@@ -1,12 +1,12 @@
+import 'dart:io';
+
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../core/styles/colors.dart';
 import '../core/styles/values.dart';
 import '../custom_text.dart';
-import '../main.dart';
 import '../main_appbar.dart';
 import '../utils.dart';
 
@@ -94,7 +94,13 @@ class SettingsPageState extends State<SettingsPage> {
                               title: "Share with Friends",
                               icon: Icons.share_sharp,
                               onTap: () {
-                                urlLauncher("https://gsmchina.com");
+                                if (Platform.isAndroid) {
+                                  Share.share(
+                                      'https://play.google.com/store/apps/details?id=net.metareverse.voiceapp');
+                                } else {
+                                  Share.share(
+                                      'https://apps.apple.com/app/voiceapp-celebrity-cloner/id6463164240');
+                                }
                               },
                             ),
                           ],
@@ -174,47 +180,6 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-                child: CustomText(
-                    text: "Color Theme",
-                    textStyleType: TextStyleType.subtitle2),
-              ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppValues.screenPadding),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: themeData.colorScheme.secondaryBgColor,
-                      borderRadius:
-                          BorderRadius.circular(AppValues.generalRadius)),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: AppValues.screenPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            colorPicker(AppColors.primaryColor),
-                            colorPicker(Colors.blue),
-                            colorPicker(Colors.green),
-                            colorPicker(Colors.teal),
-                            colorPicker(Colors.purpleAccent),
-                            colorPicker(Colors.yellow.shade900),
-                            colorPicker(Colors.brown),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               const SizedBox(height: 30),
             ],
           ),
@@ -238,43 +203,6 @@ class SettingsPageState extends State<SettingsPage> {
         title: gtitle,
         leading: gleading,
         trailing: gtrailing);
-  }
-
-  Widget colorPicker(Color wcolor) {
-    bool selected = (Theme.of(context).colorScheme.primary ==
-        AppColors.createMaterialColor(wcolor));
-
-    return Container(
-      width: 42,
-      height: 42,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      margin: const EdgeInsets.only(right: 10),
-      child: RawMaterialButton(
-        shape: const CircleBorder(),
-        elevation: 0,
-        fillColor: wcolor,
-        padding: const EdgeInsets.all(0.0),
-        onPressed: () async {
-          MyApp.of(context)!.changeColor(AppColors.createMaterialColor(wcolor));
-
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setInt("wcolor", wcolor.value);
-        },
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          transitionBuilder: (Widget child, Animation<double> animation) =>
-              ScaleTransition(
-            scale: animation,
-            child: child,
-          ),
-          child: selected
-              ? const Icon(Icons.check_sharp, color: Colors.white)
-              : null,
-        ),
-      ),
-    );
   }
 }
 

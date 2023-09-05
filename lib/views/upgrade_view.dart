@@ -29,7 +29,7 @@ class UpgradeView extends StatelessWidget {
         },
         onDispose: (model) => model.dispose(),
         onPageBuilder: (context, viewModel, themeData) => Scaffold(
-            backgroundColor: themeData.colorScheme.secondaryBgColor,
+            backgroundColor: themeData.colorScheme.secondaryColor,
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
@@ -47,7 +47,7 @@ class UpgradeView extends StatelessWidget {
               children: [
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    themeData.colorScheme.primary,
+                    themeData.colorScheme.secondaryColor,
                     BlendMode.color,
                   ),
                   child: Container(
@@ -64,6 +64,7 @@ class UpgradeView extends StatelessWidget {
                   ),
                 ),
                 SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -93,7 +94,8 @@ class UpgradeView extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Container(
                                     decoration: BoxDecoration(
-                                      color: themeData.colorScheme.primary,
+                                      color:
+                                          themeData.colorScheme.secondaryColor,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     padding: const EdgeInsets.symmetric(
@@ -153,9 +155,10 @@ class UpgradeView extends StatelessWidget {
                                                                 'weekly'
                                                             ? themeData
                                                                 .colorScheme
-                                                                .primary
-                                                            : Colors
-                                                                .grey.shade300,
+                                                                .secondaryColor
+                                                            : themeData
+                                                                .colorScheme
+                                                                .dividerAllColor,
                                                       )),
                                                   padding: const EdgeInsets
                                                       .symmetric(
@@ -226,7 +229,7 @@ class UpgradeView extends StatelessWidget {
                                                                     'monthly'
                                                                 ? themeData
                                                                     .colorScheme
-                                                                    .primary
+                                                                    .secondaryColor
                                                                 : themeData
                                                                     .colorScheme
                                                                     .dividerAllColor,
@@ -323,7 +326,7 @@ class UpgradeView extends StatelessWidget {
                                                               BoxDecoration(
                                                             color: themeData
                                                                 .colorScheme
-                                                                .primary,
+                                                                .secondaryColor,
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -468,7 +471,8 @@ class UpgradeView extends StatelessWidget {
                                     child: Text(
                                       "Privacy policy",
                                       style: TextStyle(
-                                          color: themeData.colorScheme.primary,
+                                          color: themeData
+                                              .colorScheme.primaryTextColor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -483,7 +487,8 @@ class UpgradeView extends StatelessWidget {
                                       "Terms of service",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: themeData.colorScheme.primary,
+                                          color: themeData
+                                              .colorScheme.primaryTextColor,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -535,8 +540,8 @@ class UpgradeView extends StatelessWidget {
                                         "Restore",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color:
-                                                themeData.colorScheme.primary,
+                                            color: themeData
+                                                .colorScheme.secondaryColor,
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500),
                                       )),

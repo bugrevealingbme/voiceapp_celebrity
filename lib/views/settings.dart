@@ -131,7 +131,8 @@ class SettingsPageState extends State<SettingsPage> {
                     children: [
                       ListTile(
                         onTap: () {
-                          urlLauncher('https://gcamloader.com/privacy.html');
+                          urlLauncher(
+                              'https://metareverse.net/apps/voice_cloning/privacy.html');
                         },
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 0),
@@ -145,7 +146,8 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                       ListTile(
                         onTap: () {
-                          urlLauncher('https://gcamloader.com/privacy.html');
+                          urlLauncher(
+                              'https://metareverse.net/apps/voice_cloning/terms.html');
                         },
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 0),

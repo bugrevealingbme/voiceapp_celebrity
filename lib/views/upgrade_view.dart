@@ -482,7 +482,7 @@ class UpgradeView extends StatelessWidget {
                                 Flexible(
                                   child: InkWell(
                                     onTap: () => launchUrlString(
-                                        'https://vpnverse.net/terms.html'),
+                                        'https://metareverse.net/apps/voice_cloning/terms.html'),
                                     child: Text(
                                       "Terms of service",
                                       textAlign: TextAlign.center,

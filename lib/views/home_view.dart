@@ -2,6 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
+import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
 import 'package:clone_voice/utils.dart';
 import 'package:clone_voice/utils/empty_behavior.dart';
@@ -447,8 +448,8 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
       physics: physc == true
           ? const BouncingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: AppSizes().useTabletLayout == true ? 6 : 4,
         crossAxisSpacing: 5,
         mainAxisSpacing: 0,
       ),
@@ -664,57 +665,6 @@ class PopupMenuContentState extends State<PopupMenuContent>
                           behavior: EmptyBehavior(),
                           child: Column(
                             children: [
-                              const SizedBox(height: 15),
-                              DefaultTabController(
-                                length: 4,
-                                initialIndex: viewModel.tabIndex,
-                                child: Theme(
-                                  data: ThemeData(
-                                    highlightColor: Colors.transparent,
-                                    splashColor: Colors.transparent,
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: TabBar(
-                                      labelColor: themeData
-                                          .colorScheme.primaryTextColor,
-                                      indicator: BoxDecoration(
-                                        color: themeData
-                                            .colorScheme.secondaryBgColor,
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      isScrollable: true,
-                                      physics: const ScrollPhysics(),
-                                      indicatorPadding: EdgeInsets.zero,
-                                      padding: EdgeInsets.zero,
-                                      labelPadding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 0),
-                                      labelStyle: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                      unselectedLabelColor: themeData
-                                          .colorScheme.secondaryTextColor,
-                                      onTap: (value) {
-                                        viewModel.tabIndex = value;
-                                      },
-                                      tabs: const [
-                                        Tab(
-                                          text: "All",
-                                        ),
-                                        Tab(
-                                          text: "Male",
-                                        ),
-                                        Tab(
-                                          text: "Female",
-                                        ),
-                                        Tab(
-                                          text: "CGI",
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
                               Flexible(
                                 child: getGridView(viewModel, themeData,
                                     physc: true, close: _closePopup),

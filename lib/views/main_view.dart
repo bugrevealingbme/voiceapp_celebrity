@@ -22,7 +22,7 @@ class MainView extends StatelessWidget {
         model.setContext(context);
       },
       onDispose: (model) => model.dispose(),
-      onPageBuilder: (context, viewModel, themeData) => Scaffold(
+      onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
           resizeToAvoidBottomInset: false,
           extendBody: true,
           extendBodyBehindAppBar: true,

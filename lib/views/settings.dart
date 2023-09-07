@@ -4,6 +4,7 @@ import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../core/styles/values.dart';
 import '../custom_text.dart';
@@ -26,6 +27,7 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+    AppLocalizations t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: mainAppbar(themeData, context),
@@ -136,9 +138,9 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 0),
-                        title: const Text(
-                          "Privacy policy",
-                          style: TextStyle(fontSize: 15),
+                        title: Text(
+                          t.privacy_policy,
+                          style: const TextStyle(fontSize: 15),
                         ),
                         horizontalTitleGap: 0,
                         leading: Icon(Icons.description_rounded,
@@ -151,9 +153,9 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 0),
-                        title: const Text(
-                          "Terms of Service",
-                          style: TextStyle(fontSize: 15),
+                        title: Text(
+                          t.terms_of_service,
+                          style: const TextStyle(fontSize: 15),
                         ),
                         horizontalTitleGap: 0,
                         leading: Icon(Icons.description_rounded,
@@ -170,9 +172,9 @@ class SettingsPageState extends State<SettingsPage> {
                         },
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 0),
-                        title: const Text(
-                          "Contact Us",
-                          style: TextStyle(fontSize: 15),
+                        title: Text(
+                          t.contact_us,
+                          style: const TextStyle(fontSize: 15),
                         ),
                         horizontalTitleGap: 0,
                         leading: Icon(Icons.email,

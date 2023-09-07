@@ -39,7 +39,7 @@ class ShareView extends StatelessWidget {
         model.init();
       },
       onDispose: (model) => model.dispose(),
-      onPageBuilder: (context, viewModel, themeData) => Scaffold(
+      onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
         backgroundColor: themeData.colorScheme.background,
         appBar: AppBar(
           elevation: 0,
@@ -49,7 +49,7 @@ class ShareView extends StatelessWidget {
               IconThemeData(color: themeData.colorScheme.primaryTextColor),
           iconTheme:
               IconThemeData(color: themeData.colorScheme.primaryTextColor),
-          title: const Text('Result'),
+          title: Text(t.result),
           titleTextStyle: TextStyle(
               color: themeData.colorScheme.primaryTextColor,
               fontWeight: FontWeight.w900,
@@ -156,8 +156,8 @@ class ShareView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const CustomText(
-                      text: "More", textStyleType: TextStyleType.headline25),
+                  CustomText(
+                      text: t.more, textStyleType: TextStyleType.headline25),
                   const SizedBox(height: 15),
                   Row(
                     children: [
@@ -196,7 +196,7 @@ class ShareView extends StatelessWidget {
                                 viewModel.audioFile!.readAsBytesSync());
 
                             Fluttertoast.showToast(
-                              msg: "Sound saved",
+                              msg: t.sound_saved,
                             );
                           },
                           child: Container(
@@ -207,13 +207,14 @@ class ShareView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   AppValues.generalRadius),
                             ),
-                            child: const Column(
+                            child: Column(
                               children: [
-                                Icon(Icons.download_rounded),
-                                SizedBox(height: 10),
+                                const Icon(Icons.download_rounded),
+                                const SizedBox(height: 10),
                                 Text(
-                                  "Save",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  t.save,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
@@ -244,13 +245,14 @@ class ShareView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(
                                   AppValues.generalRadius),
                             ),
-                            child: const Column(
+                            child: Column(
                               children: [
-                                Icon(Icons.ios_share_rounded),
-                                SizedBox(height: 10),
+                                const Icon(Icons.ios_share_rounded),
+                                const SizedBox(height: 10),
                                 Text(
-                                  "Share",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                  t.share,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),

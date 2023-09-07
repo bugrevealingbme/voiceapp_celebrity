@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   dio: ^5.3.2
   #provider
   flutter_mobx: ^2.0.6+5
@@ -41,7 +43,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/
+    - assets/l10n/
     - assets/icons/
     - assets/voices/

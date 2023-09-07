@@ -10,7 +10,6 @@ import 'package:clone_voice/views/share_view.dart';
 import 'package:clone_voice/views/upgrade_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,7 +19,6 @@ import '../core/styles/values.dart';
 import '../main_appbar.dart';
 import '../models/event_data.dart';
 import '../models/person_model.dart';
-import '../utils/upper_case_text_formatter.dart';
 import '../view_model/home_view_model/home_view_model.dart';
 import 'generating.dart';
 
@@ -36,7 +34,7 @@ class HomeView extends StatelessWidget {
         model.init();
       },
       onDispose: (model) => model.dispose(),
-      onPageBuilder: (context, viewModel, themeData) => Scaffold(
+      onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
         backgroundColor: themeData.colorScheme.background,
         appBar: mainAppbar(themeData, context),
         body: DefaultTabController(
@@ -48,7 +46,6 @@ class HomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppValues.screenPadding,
@@ -86,17 +83,17 @@ class HomeView extends StatelessWidget {
                                 onTap: (value) {
                                   viewModel.tabIndex = value;
                                 },
-                                tabs: const [
+                                tabs: [
                                   Tab(
-                                    text: "All",
+                                    text: t.all,
                                   ),
                                   Tab(
-                                    text: "Male",
+                                    text: t.male,
                                   ),
                                   Tab(
-                                    text: "Female",
+                                    text: t.female,
                                   ),
-                                  Tab(
+                                  const Tab(
                                     text: "CGI",
                                   )
                                 ],
@@ -167,9 +164,7 @@ class HomeView extends StatelessWidget {
                       scrollPadding: EdgeInsets.zero,
                       expands: false,
                       maxLength: 300,
-                      inputFormatters: <TextInputFormatter>[
-                        UpperCaseTextFormatter()
-                      ],
+                      textCapitalization: TextCapitalization.words,
                       enableInteractiveSelection: true,
                       scrollController: ScrollController(),
                       keyboardType: TextInputType.multiline,
@@ -177,7 +172,6 @@ class HomeView extends StatelessWidget {
                       minLines: 6,
                       focusNode: FocusNode(),
                       decoration: InputDecoration(
-                        helperText: "Only english",
                         filled: true,
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: AppValues.screenPadding, vertical: 15),
@@ -255,10 +249,9 @@ class HomeView extends StatelessWidget {
                                     backgroundColor:
                                         themeData.colorScheme.buttonColor,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 15),
+                                        horizontal: 50, vertical: 17),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          AppValues.generalRadius * 1.111),
+                                      borderRadius: BorderRadius.circular(100),
                                     ),
                                     elevation: 0,
                                   ),
@@ -320,7 +313,7 @@ class HomeView extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Generate",
+                                        t.generate,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
@@ -366,7 +359,7 @@ class HomeView extends StatelessWidget {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Upgrade to VoiceAPP Pro",
+                                            t.upgrade_to_voice_pro,
                                             style: TextStyle(
                                               fontSize: 17,
                                               fontWeight: FontWeight.bold,
@@ -376,7 +369,7 @@ class HomeView extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
-                                            "Discover unlimited possibilities now!",
+                                            t.discover_unlimited_pos,
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 color: themeData.colorScheme
@@ -435,6 +428,12 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
 
     if (gender != null) {
       temp.removeWhere((element) => element.gender != gender);
+    }
+
+    String langCode = viewModel.selectedLang;
+    temp.removeWhere((element) => element.langCode != langCode);
+    if (temp.isEmpty) {
+      temp.addAll(viewModel.celebrities ?? []);
     }
 
     return GridView.builder(
@@ -664,7 +663,116 @@ class PopupMenuContentState extends State<PopupMenuContent>
                       child: ScrollConfiguration(
                           behavior: EmptyBehavior(),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              const SizedBox(height: 15),
+                              /* Row(
+                                children: [
+                                  DefaultTabController(
+                                    length: 4,
+                                    initialIndex: viewModel.tabIndex,
+                                    child: Theme(
+                                      data: ThemeData(
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TabBar(
+                                          labelColor: themeData
+                                              .colorScheme.primaryTextColor,
+                                          indicator: BoxDecoration(
+                                            color: themeData
+                                                .colorScheme.secondaryBgColor,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          isScrollable: true,
+                                          physics: const ScrollPhysics(),
+                                          indicatorPadding: EdgeInsets.zero,
+                                          padding: EdgeInsets.zero,
+                                          labelPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 0),
+                                          labelStyle: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                          unselectedLabelColor: themeData
+                                              .colorScheme.secondaryTextColor,
+                                          onTap: (value) {
+                                            viewModel.tabIndex = value;
+                                          },
+                                          tabs: const [
+                                            Tab(
+                                              text: "All",
+                                            ),
+                                            Tab(
+                                              text: "Male",
+                                            ),
+                                            Tab(
+                                              text: "Female",
+                                            ),
+                                            Tab(
+                                              text: "CGI",
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                ],
+                              ), */
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  for (int i = 0;
+                                      i < viewModel.flags.length;
+                                      i++) ...[
+                                    Observer(builder: (_) {
+                                      return InkWell(
+                                        onTap: () {
+                                          viewModel.selectedLang =
+                                              viewModel.flags[i].code ?? 'en';
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: const Duration(
+                                              milliseconds:
+                                                  AppValues.fastDuration),
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 5),
+                                          decoration: BoxDecoration(
+                                            color: viewModel.selectedLang ==
+                                                    viewModel.flags[i].code
+                                                ? themeData.colorScheme
+                                                    .secondaryBgColor
+                                                : null,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            border: Border.all(
+                                                color: themeData.colorScheme
+                                                    .secondaryBgColor),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                  viewModel.flags[i].flag ??
+                                                      '🇺🇸',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ]
+                                ],
+                              ),
                               Flexible(
                                 child: getGridView(viewModel, themeData,
                                     physc: true, close: _closePopup),

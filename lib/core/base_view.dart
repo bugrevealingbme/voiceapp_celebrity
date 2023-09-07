@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BaseView<T extends Store> extends StatefulWidget {
-  final Widget Function(BuildContext context, T value, ThemeData theme)
+  final Widget Function(
+          BuildContext context, T value, AppLocalizations t, ThemeData theme)
       onPageBuilder;
   final T viewModel;
   final Function(T model) onModelReady;
@@ -34,9 +36,10 @@ class BaseViewState<T extends Store> extends State<BaseView<T>> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations t = AppLocalizations.of(context)!;
     ThemeData themeData = Theme.of(context);
 
-    return widget.onPageBuilder(context, model, themeData);
+    return widget.onPageBuilder(context, model, t, themeData);
   }
 
   @override

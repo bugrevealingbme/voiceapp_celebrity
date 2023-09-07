@@ -13,6 +13,7 @@ PersonModel _$PersonModelFromJson(Map<String, dynamic> json) => PersonModel(
       category: json['category'] as String?,
       gender: json['gender'] as String?,
       manifest: json['manifest'] as String?,
+      langCode: json['lang_code'] as String?,
     );
 
 Map<String, dynamic> _$PersonModelToJson(PersonModel instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$PersonModelToJson(PersonModel instance) =>
       'category': instance.category,
       'gender': instance.gender,
       'manifest': instance.manifest,
+      'lang_code': instance.langCode,
     };

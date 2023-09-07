@@ -22,9 +22,9 @@ class GeneratedBeforeView extends StatelessWidget {
         model.init();
       },
       onDispose: (model) => model.dispose(),
-      onPageBuilder: (context, viewModel, themeData) => Scaffold(
+      onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
         backgroundColor: themeData.colorScheme.background,
-        appBar: mainAppbar(themeData, context, title: 'Last Generated'),
+        appBar: mainAppbar(themeData, context, title: t.last_generated),
         body: Observer(builder: (context) {
           return ListView.separated(
             separatorBuilder: (context, index) => const Divider(height: 30),

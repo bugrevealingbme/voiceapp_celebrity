@@ -23,6 +23,9 @@ class PersonModel {
   @JsonKey(name: 'manifest')
   String? manifest;
 
+  @JsonKey(name: 'lang_code')
+  String? langCode;
+
   PersonModel({
     this.id,
     this.name,
@@ -30,6 +33,7 @@ class PersonModel {
     this.category,
     this.gender,
     this.manifest,
+    this.langCode,
   });
 
   factory PersonModel.fromJson(Map<String, dynamic> json) {

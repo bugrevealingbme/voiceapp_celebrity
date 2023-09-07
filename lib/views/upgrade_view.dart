@@ -28,7 +28,7 @@ class UpgradeView extends StatelessWidget {
           model.init();
         },
         onDispose: (model) => model.dispose(),
-        onPageBuilder: (context, viewModel, themeData) => Scaffold(
+        onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
             backgroundColor: themeData.colorScheme.secondaryColor,
             extendBodyBehindAppBar: true,
             appBar: AppBar(
@@ -167,11 +167,11 @@ class UpgradeView extends StatelessWidget {
                                                         vertical: 10),
                                                     child: Column(
                                                       children: [
-                                                        const Text(
-                                                          "Weekly",
+                                                        Text(
+                                                          t.weekly,
                                                           textAlign:
                                                               TextAlign.center,
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontSize: 13,
                                                               fontWeight:
                                                                   FontWeight
@@ -197,14 +197,15 @@ class UpgradeView extends StatelessWidget {
                                                         ),
                                                         const SizedBox(
                                                             height: 5),
-                                                        const Text(
-                                                          "Cancel anytime",
+                                                        Text(
+                                                          t.cancel_anytime,
                                                           textAlign:
                                                               TextAlign.center,
-                                                          style: TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.grey),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .grey),
                                                         ),
                                                       ],
                                                     ),
@@ -249,12 +250,12 @@ class UpgradeView extends StatelessWidget {
                                                         width: double.infinity,
                                                         child: Column(
                                                           children: [
-                                                            const Text(
-                                                              "Monthly",
+                                                            Text(
+                                                              t.monthly,
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 13,
                                                                   fontWeight:
                                                                       FontWeight
@@ -296,13 +297,13 @@ class UpgradeView extends StatelessWidget {
                                                             const SizedBox(
                                                                 height: 5),
                                                             trialAvaible
-                                                                ? const Text(
-                                                                    "3 Days Free Trial",
+                                                                ? Text(
+                                                                    t.days_free_trial,
                                                                     textAlign:
                                                                         TextAlign
                                                                             .center,
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       fontSize:
                                                                           13,
                                                                       fontWeight:
@@ -350,7 +351,7 @@ class UpgradeView extends StatelessWidget {
                                                             ),
                                                             child: Text(
                                                               trialAvaible
-                                                                  ? "Free!"
+                                                                  ? t.free
                                                                   : "Save ~15%",
                                                               style:
                                                                   const TextStyle(
@@ -383,7 +384,7 @@ class UpgradeView extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 3),
                                               Text(
-                                                "Payment is secure",
+                                                t.payment_is_secure,
                                                 style: TextStyle(
                                                     color: themeData.colorScheme
                                                         .secondaryTextColor,
@@ -399,7 +400,7 @@ class UpgradeView extends StatelessWidget {
                                                         horizontal: 5),
                                               ),
                                               Text(
-                                                "No hidden costs",
+                                                t.no_hidden_costs,
                                                 style: TextStyle(
                                                     color: themeData.colorScheme
                                                         .secondaryTextColor,
@@ -444,8 +445,8 @@ class UpgradeView extends StatelessWidget {
                                                   },
                                                   child: Text(
                                                     trialAvaible
-                                                        ? "Start Free Trial Now!"
-                                                        : "Continue",
+                                                        ? t.star_free_now
+                                                        : t.t_continue,
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: AppColors.invert(
@@ -465,7 +466,7 @@ class UpgradeView extends StatelessWidget {
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(
-                                  "I do later",
+                                  t.i_do_late,
                                   style: TextStyle(
                                     color: themeData
                                         .colorScheme.secondaryTextColor,
@@ -482,7 +483,7 @@ class UpgradeView extends StatelessWidget {
                                       onTap: () => launchUrlString(
                                           'https://metareverse.net/apps/voice_cloning/privacy.html'),
                                       child: Text(
-                                        "Privacy policy",
+                                        t.privacy_policy,
                                         style: TextStyle(
                                             color: themeData
                                                 .colorScheme.primaryTextColor,
@@ -497,7 +498,7 @@ class UpgradeView extends StatelessWidget {
                                       onTap: () => launchUrlString(
                                           'https://metareverse.net/apps/voice_cloning/terms.html'),
                                       child: Text(
-                                        "Terms of service",
+                                        t.terms_of_service,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: themeData
@@ -551,7 +552,7 @@ class UpgradeView extends StatelessWidget {
                                           }
                                         },
                                         child: Text(
-                                          "Restore",
+                                          t.restore,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: themeData

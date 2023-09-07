@@ -5,6 +5,7 @@ import 'package:clone_voice/core/styles/values.dart';
 import 'package:flutter/material.dart';
 import 'package:jumping_dot/jumping_dot.dart';
 import 'package:metaballs/metaballs.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:siri_wave/siri_wave.dart';
 
 class GeneratingView extends StatefulWidget {
@@ -45,12 +46,13 @@ class _GeneratingViewState extends State<GeneratingView>
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+    AppLocalizations t = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: themeData.colorScheme.background,
       appBar: AppBar(
         backgroundColor: themeData.colorScheme.background,
-        title: const Text("Generating..."),
+        title: Text(t.generating),
         elevation: 0,
         titleTextStyle: TextStyle(
             color: themeData.colorScheme.primaryTextColor,
@@ -117,7 +119,7 @@ class _GeneratingViewState extends State<GeneratingView>
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "Cancel",
+                              t.cancel,
                               style: TextStyle(
                                 color: themeData.colorScheme.secondaryColor
                                     .withOpacity(0.8),

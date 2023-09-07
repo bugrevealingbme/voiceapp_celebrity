@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:clone_voice/models/langs_model.dart';
+import 'package:clone_voice/models/list_langs_model.dart';
 import 'package:clone_voice/models/list_person_model.dart';
 import 'package:clone_voice/models/person_model.dart';
 import 'package:clone_voice/utils.dart';
@@ -35,7 +37,13 @@ abstract class HomeViewModelBase with Store {
   List<PersonModel>? celebrities = [];
 
   @observable
+  List<LangsModel> flags = [];
+
+  @observable
   String selectedId = '';
+
+  @observable
+  String selectedLang = 'en';
 
   @observable
   int tabIndex = 0;
@@ -56,6 +64,16 @@ abstract class HomeViewModelBase with Store {
     prefs = await SharedPreferences.getInstance();
 
     celebrities = await getList();
+    flags = await getLangs() ?? [];
+
+    selectedLang = Platform.localeName.substring(0, 2);
+
+    bool isLang =
+        flags.where((element) => element.code == selectedLang).isNotEmpty;
+
+    if (!isLang) {
+      selectedLang = 'en';
+    }
   }
 
   dispose() {
@@ -94,6 +112,29 @@ abstract class HomeViewModelBase with Store {
     if (response?.statusCode == HttpStatus.ok) {
       final Map<String, dynamic> data = response?.data;
       final ListPersonModel result = ListPersonModel.fromJson(data);
+      selectedId = result.result?[0].id.toString() ?? '';
+
+      return result.result;
+    } else {
+      log('Error: ${response?.statusCode}');
+      log('Error: ${response?.data}');
+
+      return [];
+    }
+  }
+
+  Future<List<LangsModel>?> getLangs() async {
+    const String url = 'https://apiva.metareverse.net/m1/list-langs';
+
+    Response? response = await apiService.sendPostRequest(
+      endPoint: url,
+      postData: {},
+      headers: await apiService.apiHeader(),
+    );
+
+    if (response?.statusCode == HttpStatus.ok) {
+      final Map<String, dynamic> data = response?.data;
+      final ListLangsModel result = ListLangsModel.fromJson(data);
       selectedId = result.result?[0].id.toString() ?? '';
 
       return result.result;
@@ -182,7 +223,9 @@ abstract class HomeViewModelBase with Store {
     // Attaching listener
     Talsec.instance.attachListener(callback);
 
-    await Talsec.instance.start(config);
+    if (Platform.isAndroid) {
+      await Talsec.instance.start(config);
+    }
 
     return;
   }

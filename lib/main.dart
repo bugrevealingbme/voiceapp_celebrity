@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:clone_voice/core/constants/app_constants.dart';
 import 'package:clone_voice/views/custom_grey_error_page.dart';
 import 'package:clone_voice/views/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/styles/colors.dart';
@@ -42,16 +44,31 @@ main() async {
   //color and theme
   ThemeMode themeMode = ThemeMode.system;
 
+  //lang
+  String appLang = 'en'; //await langBox.get('lang');
+  appLang = prefs.getString("language") ?? Platform.localeName.substring(0, 2);
+  //if lang not supported
+  if (!AppConstants.supportedLocales.contains(Locale(appLang))) {
+    appLang = 'en';
+  }
+  //
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) => runApp(MyApp(
+            locale: appLang,
             themeMode: themeMode,
           )));
 }
 
 class MyApp extends StatefulWidget {
   final ThemeMode themeMode;
+  final String locale;
 
-  const MyApp({Key? key, required this.themeMode}) : super(key: key);
+  const MyApp({
+    Key? key,
+    required this.themeMode,
+    required this.locale,
+  }) : super(key: key);
 
   @override
   State<MyApp> createState() => MyAppState();
@@ -62,11 +79,21 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   ThemeMode? _themeMode;
+  Locale? _locale;
 
   void changeTheme(ThemeMode lthemeMode) {
     setState(() {
       _themeMode = lthemeMode;
     });
+  }
+
+  setLocale(Locale value) async {
+    setState(() {
+      _locale = value;
+    });
+    if (_locale != null) {
+      await AppLocalizations.delegate.load(_locale!);
+    }
   }
 
   setStateState() async {
@@ -89,6 +116,20 @@ class MyAppState extends State<MyApp> {
             title: 'VoiceApp: Celebrity',
             debugShowCheckedModeBanner: false,
             themeMode: _themeMode ?? widget.themeMode,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppConstants.supportedLocales,
+            locale: _locale ?? Locale(widget.locale),
+            localeResolutionCallback: (
+              locale,
+              supportedLocales,
+            ) {
+              return locale;
+            },
             theme: ThemeData(
               primarySwatch:
                   AppColors.createMaterialColor(AppColors.primaryColor),

@@ -25,6 +25,22 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
+  late final _$flagsAtom =
+      Atom(name: 'HomeViewModelBase.flags', context: context);
+
+  @override
+  List<LangsModel> get flags {
+    _$flagsAtom.reportRead();
+    return super.flags;
+  }
+
+  @override
+  set flags(List<LangsModel> value) {
+    _$flagsAtom.reportWrite(value, super.flags, () {
+      super.flags = value;
+    });
+  }
+
   late final _$selectedIdAtom =
       Atom(name: 'HomeViewModelBase.selectedId', context: context);
 
@@ -38,6 +54,22 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
   set selectedId(String value) {
     _$selectedIdAtom.reportWrite(value, super.selectedId, () {
       super.selectedId = value;
+    });
+  }
+
+  late final _$selectedLangAtom =
+      Atom(name: 'HomeViewModelBase.selectedLang', context: context);
+
+  @override
+  String get selectedLang {
+    _$selectedLangAtom.reportRead();
+    return super.selectedLang;
+  }
+
+  @override
+  set selectedLang(String value) {
+    _$selectedLangAtom.reportWrite(value, super.selectedLang, () {
+      super.selectedLang = value;
     });
   }
 
@@ -93,7 +125,9 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
   String toString() {
     return '''
 celebrities: ${celebrities},
+flags: ${flags},
 selectedId: ${selectedId},
+selectedLang: ${selectedLang},
 tabIndex: ${tabIndex},
 appModded: ${appModded},
 volumeUp: ${volumeUp}

@@ -121,6 +121,22 @@ mixin _$HomeViewModel on HomeViewModelBase, Store {
     });
   }
 
+  late final _$tipTextsAtom =
+      Atom(name: 'HomeViewModelBase.tipTexts', context: context);
+
+  @override
+  List<String> get tipTexts {
+    _$tipTextsAtom.reportRead();
+    return super.tipTexts;
+  }
+
+  @override
+  set tipTexts(List<String> value) {
+    _$tipTextsAtom.reportWrite(value, super.tipTexts, () {
+      super.tipTexts = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -130,7 +146,8 @@ selectedId: ${selectedId},
 selectedLang: ${selectedLang},
 tabIndex: ${tabIndex},
 appModded: ${appModded},
-volumeUp: ${volumeUp}
+volumeUp: ${volumeUp},
+tipTexts: ${tipTexts}
     ''';
   }
 }

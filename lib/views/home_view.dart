@@ -8,11 +8,13 @@ import 'package:clone_voice/utils.dart';
 import 'package:clone_voice/utils/empty_behavior.dart';
 import 'package:clone_voice/views/share_view.dart';
 import 'package:clone_voice/views/upgrade_view.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../core/base_view.dart';
 import '../core/styles/values.dart';
@@ -40,9 +42,9 @@ class HomeView extends StatelessWidget {
         body: DefaultTabController(
           length: 4,
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.zero,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            //reverse: true,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -75,7 +77,7 @@ class HomeView extends StatelessWidget {
                                 indicatorPadding: EdgeInsets.zero,
                                 padding: EdgeInsets.zero,
                                 labelPadding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 0),
+                                    horizontal: 13, vertical: 0),
                                 labelStyle: const TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w600),
                                 unselectedLabelColor:
@@ -164,7 +166,7 @@ class HomeView extends StatelessWidget {
                       scrollPadding: EdgeInsets.zero,
                       expands: false,
                       maxLength: 300,
-                      textCapitalization: TextCapitalization.words,
+                      textCapitalization: TextCapitalization.sentences,
                       enableInteractiveSelection: true,
                       scrollController: ScrollController(),
                       keyboardType: TextInputType.multiline,
@@ -176,8 +178,7 @@ class HomeView extends StatelessWidget {
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: AppValues.screenPadding, vertical: 15),
                         fillColor: themeData.colorScheme.secondaryBgColor,
-                        hintText:
-                            "Type your text here, selected will say it for you",
+                        hintText: t.home_input,
                         hintStyle: TextStyle(
                           fontSize: 14,
                           color: themeData.colorScheme.secondaryTextColor,
@@ -255,60 +256,69 @@ class HomeView extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                   ),
-                                  onPressed: upgraded != true
-                                      ? () {
-                                          Navigator.push(
+                                  onPressed: () async {
+                                    if (upgraded != true) {
+                                      final bool? willgenerate =
+                                          await Navigator.push(
                                               viewModel.lcontext,
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     const UpgradeView(),
                                               ));
-                                        }
-                                      : () {
-                                          Navigator.push(
+
+                                      if (willgenerate == false) {
+                                        return;
+                                      }
+                                    }
+
+                                    Future.delayed(
+                                      Duration.zero,
+                                      () {
+                                        Navigator.push(
+                                            viewModel.lcontext,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const GeneratingView(),
+                                            ));
+
+                                        viewModel
+                                            .postTTS()
+                                            .then((EventData? eventData) {
+                                          if (eventData == null) {
+                                            Navigator.pop(context);
+
+                                            Fluttertoast.showToast(
+                                              msg: "An error has occurred.",
+                                            );
+
+                                            return null;
+                                          }
+
+                                          if (viewModel.celebrities == null) {
+                                            return null;
+                                          }
+
+                                          PersonModel person = viewModel
+                                              .celebrities!
+                                              .firstWhere((element) =>
+                                                  (element.id ?? '')
+                                                      .toString() ==
+                                                  viewModel.selectedId);
+
+                                          return Navigator.pushReplacement(
                                               viewModel.lcontext,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const GeneratingView(),
+                                                builder: (context) => ShareView(
+                                                  eventData: eventData,
+                                                  text: viewModel
+                                                      .textController.text,
+                                                  person: person,
+                                                ),
                                               ));
-
-                                          viewModel
-                                              .postTTS()
-                                              .then((EventData? eventData) {
-                                            if (eventData == null) {
-                                              Navigator.pop(context);
-
-                                              Fluttertoast.showToast(
-                                                msg: "An error has occurred.",
-                                              );
-
-                                              return null;
-                                            }
-
-                                            if (viewModel.celebrities == null) {
-                                              return null;
-                                            }
-
-                                            PersonModel person = viewModel
-                                                .celebrities!
-                                                .firstWhere((element) =>
-                                                    (element.id ?? '')
-                                                        .toString() ==
-                                                    viewModel.selectedId);
-
-                                            return Navigator.pushReplacement(
-                                                viewModel.lcontext,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ShareView(
-                                                    eventData: eventData,
-                                                    text: viewModel
-                                                        .textController.text,
-                                                    person: person,
-                                                  ),
-                                                ));
-                                          });
-                                        },
+                                        });
+                                      },
+                                    );
+                                  },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -398,7 +408,75 @@ class HomeView extends StatelessWidget {
                               ),
                             );
                     }),
-                const SizedBox(height: 15),
+                Observer(builder: (_) {
+                  if (viewModel.tipTexts.isNotEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: AppValues.screenPadding),
+                      child: Column(
+                        children: [
+                          ValueListenableBuilder(
+                              valueListenable: upgraded,
+                              builder: (context, bool upgraded, child) {
+                                return upgraded
+                                    ? const SizedBox(height: 25)
+                                    : const Divider(height: 35);
+                              }),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    AppValues.generalRadius / 2.22),
+                                border: Border.all(
+                                  color: themeData.colorScheme.secondaryBgColor,
+                                )),
+                            child: ExpandablePageView.builder(
+                              itemCount: viewModel.tipTexts.length,
+                              scrollDirection: Axis.horizontal,
+                              controller: viewModel.pageCont,
+                              padEnds: false,
+                              physics: const BouncingScrollPhysics(),
+                              animateFirstPage: true,
+                              itemBuilder: (context, i) {
+                                return Row(
+                                  children: [
+                                    if (i == 0) ...[
+                                      const Icon(
+                                        Icons.tips_and_updates_outlined,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 15),
+                                    ],
+                                    Flexible(
+                                      child: Text(
+                                        viewModel.tipTexts[
+                                            i % viewModel.tipTexts.length],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SmoothPageIndicator(
+                            controller: viewModel.pageCont,
+                            count: viewModel.tipTexts.length,
+                            effect: WormEffect(
+                                dotHeight: 5,
+                                dotWidth: 5,
+                                type: WormType.normal,
+                                activeDotColor:
+                                    themeData.colorScheme.buttonColor),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                }),
+                const SizedBox(height: kBottomNavigationBarHeight + 20),
               ],
             ),
           ),
@@ -527,8 +605,10 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
 class MyPopupMenu extends StatefulWidget {
   final Widget child;
   final HomeViewModel viewModel;
+  final bool? click;
 
-  MyPopupMenu({Key? key, required this.child, required this.viewModel})
+  MyPopupMenu(
+      {Key? key, required this.child, required this.viewModel, this.click})
       : assert(child.key != null),
         super(key: key);
 
@@ -541,6 +621,7 @@ class MyPopupMenuState extends State<MyPopupMenu> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragStart: (details) => _showPopupMenu(),
+      onTap: widget.click == true ? () => _showPopupMenu() : null,
       child: widget.child,
     );
   }

@@ -41,11 +41,45 @@ mixin _$GeneratedBeforeViewModel on GeneratedBeforeViewModelBase, Store {
     });
   }
 
+  late final _$bannerAdAtom =
+      Atom(name: 'GeneratedBeforeViewModelBase.bannerAd', context: context);
+
+  @override
+  BannerAd? get bannerAd {
+    _$bannerAdAtom.reportRead();
+    return super.bannerAd;
+  }
+
+  @override
+  set bannerAd(BannerAd? value) {
+    _$bannerAdAtom.reportWrite(value, super.bannerAd, () {
+      super.bannerAd = value;
+    });
+  }
+
+  late final _$isBannerAdLoadedAtom = Atom(
+      name: 'GeneratedBeforeViewModelBase.isBannerAdLoaded', context: context);
+
+  @override
+  bool get isBannerAdLoaded {
+    _$isBannerAdLoadedAtom.reportRead();
+    return super.isBannerAdLoaded;
+  }
+
+  @override
+  set isBannerAdLoaded(bool value) {
+    _$isBannerAdLoadedAtom.reportWrite(value, super.isBannerAdLoaded, () {
+      super.isBannerAdLoaded = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 generatedBefore: ${generatedBefore},
-tabIndex: ${tabIndex}
+tabIndex: ${tabIndex},
+bannerAd: ${bannerAd},
+isBannerAdLoaded: ${isBannerAdLoaded}
     ''';
   }
 }

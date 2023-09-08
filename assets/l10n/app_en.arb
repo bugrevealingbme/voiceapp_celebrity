@@ -30,7 +30,18 @@
 	"share": "Share",
 	"generating": "Generating...",
 	"cancel": "Cancel",
-	"contact_us": "Contact Us"
+	"contact_us": "Contact Us",
+	"tips1": "Don't forget add or commas to get cleanser results.",
+    "tips2": "Our AI’s can also speak other than their native language. But this will cause a difference in tone.",
+    "tips3": "Upgrading to Pro will give us a better opportunity to improve our app.",
+    "tips4": "The application is easy to use: Enter the text and listen to the audio immediately by clicking on the Generate button.",
+	"settings": "Settings",
+	"social": "Social",
+	"share_with_fr": "Share with Friends",
+	"general": "General",
+	"home_input": "Type your text here, selected will say it for you",
+	"currently_unavailable": "Currently unavailable..."
 
+	
 
 }

@@ -15,7 +15,7 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context, {String? title}) {
         IconThemeData(color: themeData.colorScheme.primaryTextColor),
     iconTheme: IconThemeData(color: themeData.colorScheme.primaryTextColor),
     title: Text(
-      title ?? 'VoiceApp: Celebrity',
+      title ?? 'VoiceApp',
     ),
     centerTitle: false,
     titleTextStyle: TextStyle(
@@ -37,12 +37,15 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context, {String? title}) {
                   padding: const EdgeInsets.symmetric(
                       horizontal: AppValues.screenPadding),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppValues.screenPadding, vertical: 5),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: upgraded ? 0 : AppValues.screenPadding,
+                        vertical: 5),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: themeData.colorScheme.secondaryBgColorDark,
-                      ),
+                      border: upgraded
+                          ? null
+                          : Border.all(
+                              color: themeData.colorScheme.secondaryBgColorDark,
+                            ),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: InkWell(
@@ -72,7 +75,7 @@ AppBar mainAppbar(ThemeData themeData, BuildContext context, {String? title}) {
                             "Pro",
                             style: TextStyle(
                                 color: upgraded
-                                    ? themeData.colorScheme.primaryTextColor
+                                    ? themeData.colorScheme.secondaryTextColor
                                     : null),
                           ),
                         ],

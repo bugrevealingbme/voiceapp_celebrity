@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math' hide log;
 
 import 'package:clone_voice/models/langs_model.dart';
 import 'package:clone_voice/models/list_langs_model.dart';
@@ -14,6 +15,7 @@ import 'package:freerasp/freerasp.dart';
 import 'package:mobx/mobx.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' hide Store;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/services/api_service.dart';
 import '../../globals.dart';
@@ -54,7 +56,25 @@ abstract class HomeViewModelBase with Store {
   @observable
   bool volumeUp = true;
 
+  @observable
+  List<String> tipTexts = [];
+
+  final pageCont = PageController(keepPage: true);
+
   setContext(BuildContext context) => lcontext = context;
+
+  generateTips() {
+    AppLocalizations t = AppLocalizations.of(lcontext)!;
+
+    tipTexts = [
+      t.tips1,
+      t.tips2,
+      t.tips3,
+      t.tips4,
+    ];
+
+    tipTexts.shuffle(Random());
+  }
 
   init() async {
     initSecurityState();
@@ -74,6 +94,8 @@ abstract class HomeViewModelBase with Store {
     if (!isLang) {
       selectedLang = 'en';
     }
+
+    generateTips();
   }
 
   dispose() {
@@ -135,7 +157,6 @@ abstract class HomeViewModelBase with Store {
     if (response?.statusCode == HttpStatus.ok) {
       final Map<String, dynamic> data = response?.data;
       final ListLangsModel result = ListLangsModel.fromJson(data);
-      selectedId = result.result?[0].id.toString() ?? '';
 
       return result.result;
     } else {

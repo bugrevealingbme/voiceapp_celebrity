@@ -5,6 +5,7 @@ import 'package:clone_voice/view_model/generated_before_view_model/generated_bef
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../core/base_view.dart';
 import '../core/styles/values.dart';
@@ -25,6 +26,8 @@ class GeneratedBeforeView extends StatelessWidget {
       onPageBuilder: (context, viewModel, t, themeData) => Scaffold(
         backgroundColor: themeData.colorScheme.background,
         appBar: mainAppbar(themeData, context, title: t.last_generated),
+        bottomSheet: _bannerAd(viewModel),
+        bottomNavigationBar: const SizedBox(height: kBottomNavigationBarHeight),
         body: Observer(builder: (context) {
           return ListView.separated(
             separatorBuilder: (context, index) => const Divider(height: 30),
@@ -37,7 +40,7 @@ class GeneratedBeforeView extends StatelessWidget {
               left: AppValues.screenPadding,
               right: AppValues.screenPadding,
               top: 20,
-              bottom: kBottomNavigationBarHeight + 20,
+              bottom: kBottomNavigationBarHeight + 60,
             ),
             itemBuilder: (context, index) {
               return Row(
@@ -105,7 +108,14 @@ class GeneratedBeforeView extends StatelessWidget {
                           play: play,
                           loopMode: LoopMode.none,
                           initialPosition: Duration.zero,
-                          onFinished: () => play = false,
+                          onFinished: () {
+                            setstate(
+                              () {
+                                play = false;
+                              },
+                            );
+                            return;
+                          },
                           child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             decoration: BoxDecoration(
@@ -144,5 +154,24 @@ class GeneratedBeforeView extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  Observer _bannerAd(GeneratedBeforeViewModel viewModel) {
+    return Observer(builder: (_) {
+      return (viewModel.bannerAd != null && viewModel.isBannerAdLoaded)
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: viewModel.bannerAd?.size.width.toDouble(),
+                  height: viewModel.bannerAd?.size.height.toDouble(),
+                  child: viewModel.bannerAd != null
+                      ? AdWidget(ad: viewModel.bannerAd!)
+                      : const SizedBox(),
+                ),
+              ],
+            )
+          : const SizedBox();
+    });
   }
 }

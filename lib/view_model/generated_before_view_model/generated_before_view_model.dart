@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:clone_voice/globals.dart';
 import 'package:clone_voice/models/generated_model.dart';
 import 'package:clone_voice/models/list_generated_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../core/services/api_service.dart';
@@ -26,11 +28,43 @@ abstract class GeneratedBeforeViewModelBase with Store {
   @observable
   int tabIndex = 0;
 
+  @observable
+  BannerAd? bannerAd;
+  @observable
+  bool isBannerAdLoaded = false;
+
+  /// Loads a banner ad.
+  void loadBannerAd() {
+    String adUnitId = 'ca-app-pub-3753684966275105/8239110410';
+    if (Platform.isIOS) {
+      adUnitId = 'ca-app-pub-3753684966275105/5625389517';
+    }
+
+    if (upgraded.value == true) {
+      return;
+    }
+
+    bannerAd = BannerAd(
+      adUnitId: adUnitId,
+      request: const AdRequest(),
+      size: AdSize.largeBanner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          isBannerAdLoaded = true;
+        },
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
+
   setContext(BuildContext context) => lcontext = context;
 
   init() async {
     apiService = ApiService();
 
+    loadBannerAd();
     generatedBefore = await getList();
   }
 

@@ -53,5 +53,7 @@
 	<string>This app will use your location to show features near you</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3753684966275105~2056845445</string>
 </dict>
 </plist>

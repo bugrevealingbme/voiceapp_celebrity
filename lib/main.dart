@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:clone_voice/core/constants/app_constants.dart';
+import 'package:clone_voice/core/navigation/navigation_service.dart';
 import 'package:clone_voice/views/custom_grey_error_page.dart';
 import 'package:clone_voice/views/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,6 +34,7 @@ main() async {
       1024 * 1024 * 8000; // 8000 MB
   await ScreenUtil.ensureScreenSize();
 
+  MobileAds.instance.initialize();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   upgraded.value = prefs.getBool("upgraded") ?? false;
 
@@ -113,9 +116,10 @@ class MyAppState extends State<MyApp> {
               };
               return widget!;
             },
-            title: 'VoiceApp: Celebrity',
+            title: 'VoiceApp',
             debugShowCheckedModeBanner: false,
             themeMode: _themeMode ?? widget.themeMode,
+            navigatorKey: NavigationService.navigatorKey,
             localizationsDelegates: const [
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,

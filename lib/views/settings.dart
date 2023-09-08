@@ -30,7 +30,7 @@ class SettingsPageState extends State<SettingsPage> {
     AppLocalizations t = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: mainAppbar(themeData, context),
+      appBar: mainAppbar(themeData, context, title: t.settings),
       backgroundColor: themeData.colorScheme.background,
       body: Container(
         margin: const EdgeInsets.only(top: 10),
@@ -44,11 +44,11 @@ class SettingsPageState extends State<SettingsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppValues.screenPadding),
                 child: CustomText(
-                    text: "Social", textStyleType: TextStyleType.subtitle2),
+                    text: t.social, textStyleType: TextStyleType.subtitle2),
               ),
               const SizedBox(height: 10),
               Padding(
@@ -93,7 +93,7 @@ class SettingsPageState extends State<SettingsPage> {
                             ),
                             SocialWidget(
                               themeData: themeData,
-                              title: "Share with Friends",
+                              title: t.share_with_fr,
                               icon: Icons.share_sharp,
                               onTap: () {
                                 if (Platform.isAndroid) {
@@ -111,11 +111,11 @@ class SettingsPageState extends State<SettingsPage> {
                     ),
                   )),
               const SizedBox(height: 15),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppValues.screenPadding),
                 child: CustomText(
-                    text: "General", textStyleType: TextStyleType.subtitle2),
+                    text: t.general, textStyleType: TextStyleType.subtitle2),
               ),
               const SizedBox(height: 10),
               Padding(

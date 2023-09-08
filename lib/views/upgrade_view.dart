@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:clone_voice/core/navigation/navigation_service.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/sizes.dart';
@@ -54,12 +55,14 @@ class UpgradeView extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.topCenter,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.contain,
+                          fit: AppSizes().useTabletLayout
+                              ? BoxFit.contain
+                              : BoxFit.cover,
                           repeat: ImageRepeat.repeat,
                           alignment: Alignment.topCenter,
-                          image: AssetImage('assets/pro_banner.png'),
+                          image: const AssetImage('assets/pro_banner.png'),
                         ),
                       ),
                     ),
@@ -349,16 +352,36 @@ class UpgradeView extends StatelessWidget {
                                                               horizontal: 10,
                                                               vertical: 2,
                                                             ),
-                                                            child: Text(
-                                                              trialAvaible
-                                                                  ? t.free
-                                                                  : "Save ~15%",
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 12,
-                                                              ),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                const Icon(
+                                                                  Icons
+                                                                      .savings_outlined,
+                                                                  size: 16,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                                const SizedBox(
+                                                                    width: 5),
+                                                                Text(
+                                                                  trialAvaible
+                                                                      ? t.free
+                                                                      : "~15%",
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ),
@@ -473,6 +496,27 @@ class UpgradeView extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              if (rights.value > 0)
+                                TextButton(
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.zero)),
+                                  onPressed: () async {
+                                    final bool go = await viewModel
+                                        .generateRewardAd(show: true);
+
+                                    if (go) {
+                                      NavigationService.navigatePop(data: true);
+                                    }
+                                  },
+                                  child: Text(
+                                    "Generate by watching ads ",
+                                    style: TextStyle(
+                                      color:
+                                          themeData.colorScheme.secondaryColor,
+                                    ),
+                                  ),
+                                ),
                               const SizedBox(height: 125),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

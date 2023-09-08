@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:clone_voice/core/navigation/navigation_service.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/sizes.dart';
@@ -502,12 +501,8 @@ class UpgradeView extends StatelessWidget {
                                       padding: MaterialStateProperty.all(
                                           EdgeInsets.zero)),
                                   onPressed: () async {
-                                    final bool go = await viewModel
-                                        .generateRewardAd(show: true);
-
-                                    if (go) {
-                                      NavigationService.navigatePop(data: true);
-                                    }
+                                    await viewModel.generateRewardAd(
+                                        show: true);
                                   },
                                   child: Text(
                                     "Generate by watching ads ",

@@ -35,16 +35,20 @@ abstract class UpgradeViewModelBase with Store {
   @observable
   RewardedAd? rewardedAd;
 
-  Future<bool> generateRewardAd({bool? show}) async {
+  generateRewardAd({bool? show}) async {
     AppLocalizations t = AppLocalizations.of(lcontext)!;
-
-    bool generate = false;
 
     if (isBannerAdLoaded) {
       await rewardedAd?.show(
         onUserEarnedReward: (ad, reward) {
           rights.value = rights.value - 1;
-          generate = true;
+
+          Future.delayed(
+            Duration.zero,
+            () {
+              Navigator.pop(lcontext, true);
+            },
+          );
         },
       );
     } else {
@@ -62,18 +66,23 @@ abstract class UpgradeViewModelBase with Store {
                 ad.show(
                   onUserEarnedReward: (ad, reward) {
                     rights.value = rights.value - 1;
-                    generate = true;
+
+                    Future.delayed(
+                      Duration.zero,
+                      () {
+                        Navigator.pop(lcontext, true);
+                      },
+                    );
                   },
                 );
               }
             },
             onAdFailedToLoad: (LoadAdError error) {
+              if (error.message == 'The rewarded ad have been showed.') {}
               showToast(t.currently_unavailable);
             },
           ));
     }
-
-    return generate;
   }
 
   dispose() {}

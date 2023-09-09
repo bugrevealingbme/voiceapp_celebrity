@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:clone_voice/core/constants/app_constants.dart';
 import 'package:clone_voice/core/navigation/navigation_service.dart';
+import 'package:clone_voice/firebase_options.dart';
 import 'package:clone_voice/views/custom_grey_error_page.dart';
 import 'package:clone_voice/views/main_view.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,6 +45,10 @@ main() async {
   OneSignal.shared.setAppId("535e15d0-73f7-41cf-94e8-74d57ebc4e23");
   OneSignal.shared.promptUserForPushNotificationPermission();
   //
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   //color and theme
   ThemeMode themeMode = ThemeMode.system;

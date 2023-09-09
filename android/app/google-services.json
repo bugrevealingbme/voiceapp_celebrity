@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "4892977441",
+    "project_id": "voiceapp-a0467",
+    "storage_bucket": "voiceapp-a0467.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4892977441:android:c3f2699d48c5a323787660",
+        "android_client_info": {
+          "package_name": "net.metareverse.voiceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4892977441-51mhica3o69ksh2dvgi7bgo08qvk2ngu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-70SjqZadpxFw1JIHDWa52pG5qOWLKrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4892977441-51mhica3o69ksh2dvgi7bgo08qvk2ngu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

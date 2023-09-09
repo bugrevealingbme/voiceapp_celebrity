@@ -266,7 +266,7 @@ class HomeView extends StatelessWidget {
                                                     const UpgradeView(),
                                               ));
 
-                                      if (willgenerate == false) {
+                                      if (willgenerate != true) {
                                         return;
                                       }
                                     }

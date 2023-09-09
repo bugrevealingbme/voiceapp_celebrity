@@ -237,12 +237,14 @@ class SocialWidget extends StatelessWidget {
             children: [
               Icon(icon, color: themeData.colorScheme.primary),
               const SizedBox(width: 10),
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: themeData.colorScheme.primaryTextColor),
+              Flexible(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: themeData.colorScheme.primaryTextColor),
+                ),
               )
             ],
           ),

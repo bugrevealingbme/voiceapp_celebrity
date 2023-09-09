@@ -103,10 +103,6 @@
     "generate_watching_ads"
   ],
 
-  "tr": [
-    "generate_watching_ads"
-  ],
-
   "ur": [
     "generate_watching_ads"
   ],

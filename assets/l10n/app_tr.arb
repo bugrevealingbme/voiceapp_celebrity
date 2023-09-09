@@ -11,15 +11,15 @@
 	"tips": "İpuçları",
 	"last_generated": "Son Oluşturulan",
 	"weekly": "Haftalık",
-	"cancel_anytime": "Her Zaman İptal Et",
+	"cancel_anytime": "İstediğin an iptal et",
 	"monthly": "Aylık",
 	"days_free_trial": "3 Gün Ücretsiz Deneme",
 	"free": "Ücretsiz!",
 	"payment_is_secure": "Ödeme Güvencesi",
 	"no_hidden_costs": "Gizli maliyet yok",
-	"star_free_now": "Şimdi Ücretsiz Denemeye Başla!",
+	"star_free_now": "Ücretsiz Denemeyi Şimdi Başlat!",
 	"t_continue": "Devam",
-	"i_do_late": "Daha sonra yaparım",
+	"i_do_late": "Daha sonra",
 	"privacy_policy": "Gizlilik Politikası",
 	"terms_of_service": "Hizmet Şartları",
 	"restore": "Geri Yükle",
@@ -40,5 +40,7 @@
 	"share_with_fr": "Arkadaşlarla Paylaş",
 	"general": "Genel",
 	"home_input": "Metninizi girin ve seçilen karakter sizin için konuşsun",
-	"currently_unavailable": "Şu an mevcut değil..."
+	"currently_unavailable": "Şu an mevcut değil...",
+	"generate_watching_ads": "Reklam izleyerek devam et"
+
 }

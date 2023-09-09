@@ -359,15 +359,17 @@ class UpgradeView extends StatelessWidget {
                                                                   MainAxisAlignment
                                                                       .center,
                                                               children: [
-                                                                const Icon(
-                                                                  Icons
-                                                                      .savings_outlined,
-                                                                  size: 16,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 5),
+                                                                if (!trialAvaible) ...[
+                                                                  const Icon(
+                                                                    Icons
+                                                                        .savings_outlined,
+                                                                    size: 16,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      width: 5),
+                                                                ],
                                                                 Text(
                                                                   trialAvaible
                                                                       ? t.free

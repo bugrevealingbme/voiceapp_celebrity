@@ -40,5 +40,7 @@
 	"share_with_fr": "Share with Friends",
 	"general": "General",
 	"home_input": "Type your text here, selected will say it for you",
-	"currently_unavailable": "Currently unavailable..."
+	"currently_unavailable": "Currently unavailable...",
+	"generate_watching_ads": "Generate by watching ads"
+	
 }

@@ -505,7 +505,7 @@ class UpgradeView extends StatelessWidget {
                                         show: true);
                                   },
                                   child: Text(
-                                    "Generate by watching ads ",
+                                    t.generate_watching_ads,
                                     style: TextStyle(
                                       color:
                                           themeData.colorScheme.secondaryColor,

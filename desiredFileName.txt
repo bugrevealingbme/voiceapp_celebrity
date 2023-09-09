@@ -1,1 +1,117 @@
-{}
+{
+  "ar": [
+    "generate_watching_ads"
+  ],
+
+  "bg": [
+    "generate_watching_ads"
+  ],
+
+  "cs": [
+    "generate_watching_ads"
+  ],
+
+  "da": [
+    "generate_watching_ads"
+  ],
+
+  "de": [
+    "generate_watching_ads"
+  ],
+
+  "el": [
+    "generate_watching_ads"
+  ],
+
+  "es": [
+    "generate_watching_ads"
+  ],
+
+  "fi": [
+    "generate_watching_ads"
+  ],
+
+  "fr": [
+    "generate_watching_ads"
+  ],
+
+  "hi": [
+    "generate_watching_ads"
+  ],
+
+  "hr": [
+    "generate_watching_ads"
+  ],
+
+  "id": [
+    "generate_watching_ads"
+  ],
+
+  "it": [
+    "generate_watching_ads"
+  ],
+
+  "ja": [
+    "generate_watching_ads"
+  ],
+
+  "kr": [
+    "generate_watching_ads"
+  ],
+
+  "ms": [
+    "generate_watching_ads"
+  ],
+
+  "nl": [
+    "generate_watching_ads"
+  ],
+
+  "pl": [
+    "generate_watching_ads"
+  ],
+
+  "pt": [
+    "generate_watching_ads"
+  ],
+
+  "pt_BR": [
+    "generate_watching_ads"
+  ],
+
+  "ro": [
+    "generate_watching_ads"
+  ],
+
+  "ru": [
+    "generate_watching_ads"
+  ],
+
+  "sk": [
+    "generate_watching_ads"
+  ],
+
+  "sv": [
+    "generate_watching_ads"
+  ],
+
+  "ta": [
+    "generate_watching_ads"
+  ],
+
+  "tl": [
+    "generate_watching_ads"
+  ],
+
+  "tr": [
+    "generate_watching_ads"
+  ],
+
+  "ur": [
+    "generate_watching_ads"
+  ],
+
+  "zh": [
+    "generate_watching_ads"
+  ]
+}

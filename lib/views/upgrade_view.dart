@@ -485,18 +485,6 @@ class UpgradeView extends StatelessWidget {
                                         ],
                                       );
                               }),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  t.i_do_late,
-                                  style: TextStyle(
-                                    color: themeData
-                                        .colorScheme.secondaryTextColor,
-                                  ),
-                                ),
-                              ),
                               if (rights.value > 0)
                                 TextButton(
                                   style: ButtonStyle(
@@ -516,7 +504,8 @@ class UpgradeView extends StatelessWidget {
                                 ),
                               const SizedBox(height: 125),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Flexible(
@@ -540,7 +529,6 @@ class UpgradeView extends StatelessWidget {
                                           'https://metareverse.net/apps/voice_cloning/terms.html'),
                                       child: Text(
                                         t.terms_of_service,
-                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: themeData
                                                 .colorScheme.primaryTextColor,

@@ -9,6 +9,7 @@ part of 'person_model.dart';
 PersonModel _$PersonModelFromJson(Map<String, dynamic> json) => PersonModel(
       id: json['id'] as int?,
       name: json['name'] as String?,
+      fakeName: json['fake_name'] as String?,
       img: json['img'] as String?,
       category: json['category'] as String?,
       gender: json['gender'] as String?,
@@ -20,6 +21,7 @@ Map<String, dynamic> _$PersonModelToJson(PersonModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'fake_name': instance.fakeName,
       'img': instance.img,
       'category': instance.category,
       'gender': instance.gender,

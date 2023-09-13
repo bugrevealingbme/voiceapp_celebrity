@@ -134,7 +134,7 @@ abstract class HomeViewModelBase with Store {
     // Kaydırma işlemini gerçekleştirin
     gridController.animateTo(
       index * itemExtent,
-      duration: Duration(milliseconds: 500), // Kaydırma süresi
+      duration: const Duration(milliseconds: 500), // Kaydırma süresi
       curve: Curves.easeInOut, // Kaydırma eğrisi
     );
   }

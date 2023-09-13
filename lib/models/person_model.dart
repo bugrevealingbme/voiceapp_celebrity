@@ -11,6 +11,9 @@ class PersonModel {
   @JsonKey(name: 'name')
   String? name;
 
+  @JsonKey(name: 'fake_name')
+  String? fakeName;
+
   @JsonKey(name: 'img')
   String? img;
 
@@ -29,6 +32,7 @@ class PersonModel {
   PersonModel({
     this.id,
     this.name,
+    this.fakeName,
     this.img,
     this.category,
     this.gender,

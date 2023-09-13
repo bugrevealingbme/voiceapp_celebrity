@@ -2,7 +2,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
-import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
 import 'package:clone_voice/models/langs_model.dart';
 import 'package:clone_voice/utils.dart';
@@ -607,7 +606,7 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    personModel.name ?? '',
+                    personModel.fakeName ?? '',
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, fontSize: 16),
                   ),
@@ -631,112 +630,6 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                   const SizedBox(width: 7),
                 ],
               ),
-            ),
-          );
-        });
-      },
-    );
-
-    return GridView.builder(
-      shrinkWrap: true,
-      controller: viewModel.gridController,
-      padding: physc == true
-          ? const EdgeInsets.symmetric(vertical: 20)
-          : EdgeInsets.zero,
-      primary: false,
-      itemCount: temp.length,
-      physics: physc == true
-          ? const BouncingScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: AppSizes().useTabletLayout == true ? 6 : 4,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 0,
-      ),
-      itemBuilder: (context, index) {
-        return Observer(builder: (_) {
-          PersonModel personModel = temp[index];
-          return InkWell(
-            borderRadius: BorderRadius.circular(50),
-            splashColor: Colors.transparent,
-            onTap: () {
-              viewModel.scrollToIndex(index);
-              if (close != null) {
-                close();
-              }
-              viewModel.selectedId = personModel.id.toString();
-
-              if (viewModel.volumeUp) {
-                AssetsAudioPlayer.newPlayer().open(
-                  Audio(
-                      "assets/voices/${personModel.name?.replaceAll(' ', '_').toLowerCase()}.mp3"),
-                  autoStart: true,
-                  showNotification: false,
-                  respectSilentMode: false,
-                  playSpeed: 1,
-                  loopMode: LoopMode.none,
-                  volume: 1,
-                );
-              }
-            },
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    Flexible(
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
-                        padding: EdgeInsets.all(index == 0 ? 2 : 2),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(500),
-                          border: Border.all(
-                              color: viewModel.selectedId ==
-                                      personModel.id.toString()
-                                  ? themeData.colorScheme.primary
-                                  : Colors.transparent,
-                              width: 1.5),
-                        ),
-                        child: ClipOval(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: personModel.img != null &&
-                                      personModel.img != ""
-                                  ? DecorationImage(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.black.withOpacity(0.9721),
-                                          BlendMode.dstATop),
-                                      alignment: Alignment.center,
-                                      image: CachedNetworkImageProvider(
-                                        personModel.img ?? '',
-                                      ),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  bottom: 5,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: themeData.colorScheme.buttonColor),
-                    child: Text(
-                      personModel.name ?? '',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ],
             ),
           );
         });

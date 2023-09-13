@@ -17,7 +17,9 @@ import '../globals.dart';
 import '../view_model/upgrade_view_model/upgrade_view_model.dart';
 
 class UpgradeView extends StatelessWidget {
-  const UpgradeView({super.key});
+  final bool? showAdB;
+
+  const UpgradeView({super.key, this.showAdB});
 
   @override
   Widget build(BuildContext context) {
@@ -485,7 +487,7 @@ class UpgradeView extends StatelessWidget {
                                         ],
                                       );
                               }),
-                              if (rights.value > 0)
+                              if (rights.value > 0 && showAdB == true)
                                 TextButton(
                                   style: ButtonStyle(
                                       padding: MaterialStateProperty.all(

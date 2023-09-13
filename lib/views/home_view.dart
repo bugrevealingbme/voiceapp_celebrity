@@ -264,7 +264,8 @@ class HomeView extends StatelessWidget {
                                               viewModel.lcontext,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const UpgradeView(),
+                                                    const UpgradeView(
+                                                        showAdB: true),
                                               ));
 
                                       if (willgenerate != true) {

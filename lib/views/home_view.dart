@@ -509,10 +509,9 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
       temp.removeWhere((element) => element.gender != gender);
     }
 
-    String langCode = viewModel.selectedLang;
-    temp.removeWhere((element) => element.langCode != langCode);
-    if (temp.isEmpty) {
-      temp.addAll(viewModel.celebrities ?? []);
+    if (viewModel.selectedLang != '') {
+      String langCode = viewModel.selectedLang;
+      temp.removeWhere((element) => element.langCode != langCode);
     }
 
     return ListView.builder(
@@ -522,11 +521,19 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
           ? const EdgeInsets.symmetric(vertical: 20)
           : EdgeInsets.zero,
       primary: false,
-      itemCount: temp.length,
+      itemCount: temp.isEmpty ? 1 : temp.length,
       physics: physc == true
           ? const BouncingScrollPhysics()
           : const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
+        if (temp.isEmpty) {
+          return Icon(
+            Icons.search_off_outlined,
+            color: themeData.colorScheme.secondaryTextColor,
+            size: 38,
+          );
+        }
+
         return Observer(builder: (_) {
           PersonModel personModel = temp[index];
           return InkWell(
@@ -838,116 +845,161 @@ class PopupMenuContentState extends State<PopupMenuContent>
       },
       child: Material(
         type: MaterialType.transparency,
-        child: InkWell(
-          splashColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          onTap: () => _closePopup(),
-          child: SizedBox(
-            height: double.maxFinite,
-            width: double.maxFinite,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: AppValues.screenPadding,
-                  right: AppValues.screenPadding,
-                  top: kToolbarHeight * 2.5,
-                  bottom: 15,
-                  child: AnimatedBuilder(
-                    animation: _animationController,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _animation.value,
-                        alignment: Alignment.topCenter,
-                        child: Opacity(opacity: _animation.value, child: child),
-                      );
-                    },
-                    child: Container(
-                      width: double.maxFinite,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppValues.screenPadding),
-                      decoration: BoxDecoration(
-                          color: themeData.colorScheme.background,
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(.1),
-                              blurRadius: 8,
-                            )
-                          ]),
-                      child: ScrollConfiguration(
-                          behavior: EmptyBehavior(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 15),
-                              /* Row(
-                                children: [
-                                  DefaultTabController(
-                                    length: 4,
-                                    initialIndex: viewModel.tabIndex,
-                                    child: Theme(
-                                      data: ThemeData(
-                                        highlightColor: Colors.transparent,
-                                        splashColor: Colors.transparent,
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: TabBar(
-                                          labelColor: themeData
-                                              .colorScheme.primaryTextColor,
-                                          indicator: BoxDecoration(
-                                            color: themeData
-                                                .colorScheme.secondaryBgColor,
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          ),
-                                          isScrollable: true,
-                                          physics: const ScrollPhysics(),
-                                          indicatorPadding: EdgeInsets.zero,
-                                          padding: EdgeInsets.zero,
-                                          labelPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 15, vertical: 0),
-                                          labelStyle: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                          unselectedLabelColor: themeData
-                                              .colorScheme.secondaryTextColor,
-                                          onTap: (value) {
-                                            viewModel.tabIndex = value;
-                                          },
-                                          tabs: const [
-                                            Tab(
-                                              text: "All",
-                                            ),
-                                            Tab(
-                                              text: "Male",
-                                            ),
-                                            Tab(
-                                              text: "Female",
-                                            ),
-                                            Tab(
-                                              text: "CGI",
-                                            )
-                                          ],
+        child: SizedBox(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                left: 0,
+                top: 0,
+                right: 0,
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  onTap: () => _closePopup(),
+                  child: Container(),
+                ),
+              ),
+              Positioned(
+                left: AppValues.screenPadding,
+                right: AppValues.screenPadding,
+                top: kToolbarHeight * 2.5,
+                bottom: 15,
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _animation.value,
+                      alignment: Alignment.topCenter,
+                      child: Opacity(opacity: _animation.value, child: child),
+                    );
+                  },
+                  child: Container(
+                    width: double.maxFinite,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppValues.screenPadding),
+                    decoration: BoxDecoration(
+                        color: themeData.colorScheme.background,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(.1),
+                            blurRadius: 8,
+                          )
+                        ]),
+                    child: ScrollConfiguration(
+                        behavior: EmptyBehavior(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15),
+                            /* Row(
+                              children: [
+                                DefaultTabController(
+                                  length: 4,
+                                  initialIndex: viewModel.tabIndex,
+                                  child: Theme(
+                                    data: ThemeData(
+                                      highlightColor: Colors.transparent,
+                                      splashColor: Colors.transparent,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TabBar(
+                                        labelColor: themeData
+                                            .colorScheme.primaryTextColor,
+                                        indicator: BoxDecoration(
+                                          color: themeData
+                                              .colorScheme.secondaryBgColor,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
                                         ),
+                                        isScrollable: true,
+                                        physics: const ScrollPhysics(),
+                                        indicatorPadding: EdgeInsets.zero,
+                                        padding: EdgeInsets.zero,
+                                        labelPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 0),
+                                        labelStyle: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                        unselectedLabelColor: themeData
+                                            .colorScheme.secondaryTextColor,
+                                        onTap: (value) {
+                                          viewModel.tabIndex = value;
+                                        },
+                                        tabs: const [
+                                          Tab(
+                                            text: "All",
+                                          ),
+                                          Tab(
+                                            text: "Male",
+                                          ),
+                                          Tab(
+                                            text: "Female",
+                                          ),
+                                          Tab(
+                                            text: "CGI",
+                                          )
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  const Spacer(),
-                                ],
-                              ), */
-                              const SizedBox(height: 10),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
+                                ),
+                                const Spacer(),
+                              ],
+                            ), */
+                            const SizedBox(height: 10),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Observer(builder: (_) {
+                                    return InkWell(
+                                      onTap: () {
+                                        viewModel.selectedLang = '';
+                                      },
+                                      child: AnimatedContainer(
+                                        duration: const Duration(
+                                            milliseconds:
+                                                AppValues.fastDuration),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: viewModel.selectedLang == ''
+                                              ? themeData
+                                                  .colorScheme.secondaryBgColor
+                                              : null,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          border: Border.all(
+                                              color: themeData.colorScheme
+                                                  .secondaryBgColor),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.clear_all_rounded)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                  for (int i = 0;
+                                      i < viewModel.flags.length;
+                                      i++) ...[
                                     Observer(builder: (_) {
                                       return InkWell(
                                         onTap: () {
-                                          viewModel.selectedLang = '';
+                                          viewModel.selectedLang =
+                                              viewModel.flags[i].code ?? 'en';
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(
@@ -958,7 +1010,8 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 5),
                                           decoration: BoxDecoration(
-                                            color: viewModel.selectedLang == ''
+                                            color: viewModel.selectedLang ==
+                                                    viewModel.flags[i].code
                                                 ? themeData.colorScheme
                                                     .secondaryBgColor
                                                 : null,
@@ -968,75 +1021,35 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                                 color: themeData.colorScheme
                                                     .secondaryBgColor),
                                           ),
-                                          child: const Row(
+                                          child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Icon(Icons.clear_all_rounded)
+                                              Text(
+                                                  viewModel.flags[i].flag ??
+                                                      '🇺🇸',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                  )),
                                             ],
                                           ),
                                         ),
                                       );
                                     }),
-                                    for (int i = 0;
-                                        i < viewModel.flags.length;
-                                        i++) ...[
-                                      Observer(builder: (_) {
-                                        return InkWell(
-                                          onTap: () {
-                                            viewModel.selectedLang =
-                                                viewModel.flags[i].code ?? 'en';
-                                          },
-                                          child: AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds:
-                                                    AppValues.fastDuration),
-                                            margin: const EdgeInsets.only(
-                                                right: 10),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 5),
-                                            decoration: BoxDecoration(
-                                              color: viewModel.selectedLang ==
-                                                      viewModel.flags[i].code
-                                                  ? themeData.colorScheme
-                                                      .secondaryBgColor
-                                                  : null,
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              border: Border.all(
-                                                  color: themeData.colorScheme
-                                                      .secondaryBgColor),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                    viewModel.flags[i].flag ??
-                                                        '🇺🇸',
-                                                    style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 18,
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    ]
-                                  ],
-                                ),
+                                  ]
+                                ],
                               ),
-                              Flexible(
-                                child: getGridView(viewModel, themeData,
-                                    physc: true, close: _closePopup),
-                              ),
-                            ],
-                          )),
-                    ),
+                            ),
+                            Flexible(
+                              child: getGridView(viewModel, themeData,
+                                  physc: true, close: _closePopup),
+                            ),
+                          ],
+                        )),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

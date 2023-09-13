@@ -41,11 +41,45 @@ mixin _$UpgradeViewModel on UpgradeViewModelBase, Store {
     });
   }
 
+  late final _$isBannerAdLoadedAtom =
+      Atom(name: 'UpgradeViewModelBase.isBannerAdLoaded', context: context);
+
+  @override
+  bool get isBannerAdLoaded {
+    _$isBannerAdLoadedAtom.reportRead();
+    return super.isBannerAdLoaded;
+  }
+
+  @override
+  set isBannerAdLoaded(bool value) {
+    _$isBannerAdLoadedAtom.reportWrite(value, super.isBannerAdLoaded, () {
+      super.isBannerAdLoaded = value;
+    });
+  }
+
+  late final _$rewardedAdAtom =
+      Atom(name: 'UpgradeViewModelBase.rewardedAd', context: context);
+
+  @override
+  RewardedAd? get rewardedAd {
+    _$rewardedAdAtom.reportRead();
+    return super.rewardedAd;
+  }
+
+  @override
+  set rewardedAd(RewardedAd? value) {
+    _$rewardedAdAtom.reportWrite(value, super.rewardedAd, () {
+      super.rewardedAd = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 offerings: ${offerings},
-selectedP: ${selectedP}
+selectedP: ${selectedP},
+isBannerAdLoaded: ${isBannerAdLoaded},
+rewardedAd: ${rewardedAd}
     ''';
   }
 }

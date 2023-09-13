@@ -14,6 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:freerasp/freerasp.dart';
 import 'package:mobx/mobx.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' hide Store;
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -34,6 +35,7 @@ abstract class HomeViewModelBase with Store {
   late SharedPreferences prefs;
 
   final ScrollController gridController = ScrollController();
+  final ItemScrollController itemScrollController = ItemScrollController();
 
   @observable
   List<PersonModel>? celebrities = [];
@@ -112,13 +114,28 @@ abstract class HomeViewModelBase with Store {
   }
 
   void scrollToIndex(int index) {
-    double itemExtent = ScreenUtil().screenHeight * .026;
+    /*  double itemExtent = ScreenUtil().screenHeight * .026;
     double offset = (roundDownToNearest5(index)) * (itemExtent);
 
     gridController.animateTo(
-      offset,
+      itemExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
+    ); 
+
+    itemScrollController.scrollTo(
+      index: index,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    ); */
+
+    double itemExtent = ScreenUtil().screenHeight * .065;
+
+    // Kaydırma işlemini gerçekleştirin
+    gridController.animateTo(
+      index * itemExtent,
+      duration: Duration(milliseconds: 500), // Kaydırma süresi
+      curve: Curves.easeInOut, // Kaydırma eğrisi
     );
   }
 

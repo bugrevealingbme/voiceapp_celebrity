@@ -45,7 +45,7 @@ abstract class HomeViewModelBase with Store {
   String selectedId = '';
 
   @observable
-  String selectedLang = 'en';
+  String selectedLang = '';
 
   @observable
   int tabIndex = 0;
@@ -86,13 +86,13 @@ abstract class HomeViewModelBase with Store {
     celebrities = await getList();
     flags = await getLangs() ?? [];
 
-    selectedLang = Platform.localeName.substring(0, 2);
+    //selectedLang = Platform.localeName.substring(0, 2);
 
     bool isLang =
         flags.where((element) => element.code == selectedLang).isNotEmpty;
 
     if (!isLang) {
-      selectedLang = 'en';
+      //selectedLang = 'en';
     }
 
     generateTips();

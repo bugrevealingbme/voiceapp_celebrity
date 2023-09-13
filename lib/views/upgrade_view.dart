@@ -504,8 +504,7 @@ class UpgradeView extends StatelessWidget {
                                 ),
                               const SizedBox(height: 125),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Flexible(

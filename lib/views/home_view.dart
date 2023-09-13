@@ -4,6 +4,7 @@ import 'package:clone_voice/core/styles/colors.dart';
 import 'package:clone_voice/core/styles/custom_color_scheme.dart';
 import 'package:clone_voice/core/styles/sizes.dart';
 import 'package:clone_voice/globals.dart';
+import 'package:clone_voice/models/langs_model.dart';
 import 'package:clone_voice/utils.dart';
 import 'package:clone_voice/utils/empty_behavior.dart';
 import 'package:clone_voice/views/share_view.dart';
@@ -514,6 +515,120 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
       temp.addAll(viewModel.celebrities ?? []);
     }
 
+    return ListView.builder(
+      shrinkWrap: true,
+      controller: viewModel.gridController,
+      padding: physc == true
+          ? const EdgeInsets.symmetric(vertical: 20)
+          : EdgeInsets.zero,
+      primary: false,
+      itemCount: temp.length,
+      physics: physc == true
+          ? const BouncingScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return Observer(builder: (_) {
+          PersonModel personModel = temp[index];
+          return InkWell(
+            borderRadius: BorderRadius.circular(50),
+            splashColor: Colors.transparent,
+            onTap: () {
+              viewModel.scrollToIndex(index);
+              if (close != null) {
+                close();
+              }
+              viewModel.selectedId = personModel.id.toString();
+
+              if (viewModel.volumeUp) {
+                AssetsAudioPlayer.newPlayer().open(
+                  Audio(
+                      "assets/voices/${personModel.name?.replaceAll(' ', '_').toLowerCase()}.mp3"),
+                  autoStart: true,
+                  showNotification: false,
+                  respectSilentMode: false,
+                  playSpeed: 1,
+                  loopMode: LoopMode.none,
+                  volume: 1,
+                );
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                color: viewModel.selectedId == personModel.id.toString()
+                    ? themeData.colorScheme.secondaryBgColor
+                    : null,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Row(
+                children: [
+                  AnimatedContainer(
+                    width: 48,
+                    height: 48,
+                    duration: const Duration(milliseconds: 100),
+                    padding: EdgeInsets.all(index == 0 ? 2 : 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(500),
+                      border: Border.all(
+                          color:
+                              viewModel.selectedId == personModel.id.toString()
+                                  ? themeData.colorScheme.primary
+                                  : Colors.transparent,
+                          width: 1.5),
+                    ),
+                    child: ClipOval(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image:
+                              personModel.img != null && personModel.img != ""
+                                  ? DecorationImage(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.9721),
+                                          BlendMode.dstATop),
+                                      alignment: Alignment.center,
+                                      image: CachedNetworkImageProvider(
+                                        personModel.img ?? '',
+                                      ),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    personModel.name ?? '',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                      viewModel.flags
+                              .firstWhere(
+                                (element) =>
+                                    element.code == personModel.langCode,
+                                orElse: () => LangsModel(),
+                              )
+                              .flag ??
+                          '',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      )),
+                  const Spacer(),
+                  Icon(Icons.keyboard_arrow_right_rounded,
+                      color: themeData.colorScheme.secondaryTextColor),
+                  const SizedBox(width: 7),
+                ],
+              ),
+            ),
+          );
+        });
+      },
+    );
+
     return GridView.builder(
       shrinkWrap: true,
       controller: viewModel.gridController,
@@ -556,26 +671,28 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                 );
               }
             },
-            child: Column(
+            child: Stack(
               children: [
-                Flexible(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    padding: EdgeInsets.all(index == 0 ? 2 : 2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(500),
-                      border: Border.all(
-                          color:
-                              viewModel.selectedId == personModel.id.toString()
+                Column(
+                  children: [
+                    Flexible(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        padding: EdgeInsets.all(index == 0 ? 2 : 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(500),
+                          border: Border.all(
+                              color: viewModel.selectedId ==
+                                      personModel.id.toString()
                                   ? themeData.colorScheme.primary
                                   : Colors.transparent,
-                          width: 1.5),
-                    ),
-                    child: ClipOval(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image:
-                              personModel.img != null && personModel.img != ""
+                              width: 1.5),
+                        ),
+                        child: ClipOval(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: personModel.img != null &&
+                                      personModel.img != ""
                                   ? DecorationImage(
                                       colorFilter: ColorFilter.mode(
                                           Colors.black.withOpacity(0.9721),
@@ -587,9 +704,27 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                                       fit: BoxFit.cover,
                                     )
                                   : null,
-                          color: Colors.grey,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 5,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: themeData.colorScheme.buttonColor),
+                    child: Text(
+                      personModel.name ?? '',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -805,16 +940,14 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                 ],
                               ), */
                               const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  for (int i = 0;
-                                      i < viewModel.flags.length;
-                                      i++) ...[
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
                                     Observer(builder: (_) {
                                       return InkWell(
                                         onTap: () {
-                                          viewModel.selectedLang =
-                                              viewModel.flags[i].code ?? 'en';
+                                          viewModel.selectedLang = '';
                                         },
                                         child: AnimatedContainer(
                                           duration: const Duration(
@@ -825,8 +958,7 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15, vertical: 5),
                                           decoration: BoxDecoration(
-                                            color: viewModel.selectedLang ==
-                                                    viewModel.flags[i].code
+                                            color: viewModel.selectedLang == ''
                                                 ? themeData.colorScheme
                                                     .secondaryBgColor
                                                 : null,
@@ -836,23 +968,63 @@ class PopupMenuContentState extends State<PopupMenuContent>
                                                 color: themeData.colorScheme
                                                     .secondaryBgColor),
                                           ),
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Text(
-                                                  viewModel.flags[i].flag ??
-                                                      '🇺🇸',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 18,
-                                                  )),
+                                              Icon(Icons.clear_all_rounded)
                                             ],
                                           ),
                                         ),
                                       );
                                     }),
-                                  ]
-                                ],
+                                    for (int i = 0;
+                                        i < viewModel.flags.length;
+                                        i++) ...[
+                                      Observer(builder: (_) {
+                                        return InkWell(
+                                          onTap: () {
+                                            viewModel.selectedLang =
+                                                viewModel.flags[i].code ?? 'en';
+                                          },
+                                          child: AnimatedContainer(
+                                            duration: const Duration(
+                                                milliseconds:
+                                                    AppValues.fastDuration),
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 5),
+                                            decoration: BoxDecoration(
+                                              color: viewModel.selectedLang ==
+                                                      viewModel.flags[i].code
+                                                  ? themeData.colorScheme
+                                                      .secondaryBgColor
+                                                  : null,
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              border: Border.all(
+                                                  color: themeData.colorScheme
+                                                      .secondaryBgColor),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                    viewModel.flags[i].flag ??
+                                                        '🇺🇸',
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 18,
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                    ]
+                                  ],
+                                ),
                               ),
                               Flexible(
                                 child: getGridView(viewModel, themeData,

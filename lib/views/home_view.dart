@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clone_voice/core/styles/colors.dart';
@@ -560,34 +562,42 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
               }
             },
             child: Container(
+              padding: Platform.isAndroid
+                  ? const EdgeInsets.symmetric(vertical: 15)
+                  : null,
               margin: const EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
                 color: viewModel.selectedId == personModel.id.toString()
                     ? themeData.colorScheme.secondaryBgColor
                     : null,
-                borderRadius: BorderRadius.circular(50),
+                borderRadius:
+                    BorderRadius.circular(Platform.isAndroid ? 0 : 50),
               ),
-              child: Row(
-                children: [
-                  AnimatedContainer(
-                    width: 48,
-                    height: 48,
-                    duration: const Duration(milliseconds: 100),
-                    padding: EdgeInsets.all(index == 0 ? 2 : 2),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(500),
-                      border: Border.all(
-                          color:
-                              viewModel.selectedId == personModel.id.toString()
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppValues.screenPadding),
+                child: Row(
+                  children: [
+                    if (Platform.isIOS) ...[
+                      AnimatedContainer(
+                        width: 48,
+                        height: 48,
+                        duration: const Duration(milliseconds: 100),
+                        padding: EdgeInsets.all(index == 0 ? 2 : 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(500),
+                          border: Border.all(
+                              color: viewModel.selectedId ==
+                                      personModel.id.toString()
                                   ? themeData.colorScheme.primary
                                   : Colors.transparent,
-                          width: 1.5),
-                    ),
-                    child: ClipOval(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image:
-                              personModel.img != null && personModel.img != ""
+                              width: 1.5),
+                        ),
+                        child: ClipOval(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: personModel.img != null &&
+                                      personModel.img != ""
                                   ? DecorationImage(
                                       colorFilter: ColorFilter.mode(
                                           Colors.black.withOpacity(0.9721),
@@ -599,36 +609,38 @@ Widget getGridView(HomeViewModel viewModel, ThemeData themeData,
                                       fit: BoxFit.cover,
                                     )
                                   : null,
-                          color: Colors.grey,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    personModel.fakeName ?? '',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                      viewModel.flags
-                              .firstWhere(
-                                (element) =>
-                                    element.code == personModel.langCode,
-                                orElse: () => LangsModel(),
-                              )
-                              .flag ??
-                          '',
+                      const SizedBox(width: 10),
+                    ],
+                    Text(
+                      personModel.fakeName ?? '',
                       style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                      )),
-                  const Spacer(),
-                  Icon(Icons.keyboard_arrow_right_rounded,
-                      color: themeData.colorScheme.secondaryTextColor),
-                  const SizedBox(width: 7),
-                ],
+                          fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                    const SizedBox(width: 7),
+                    Text(
+                        viewModel.flags
+                                .firstWhere(
+                                  (element) =>
+                                      element.code == personModel.langCode,
+                                  orElse: () => LangsModel(),
+                                )
+                                .flag ??
+                            '',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                        )),
+                    const Spacer(),
+                    Icon(Icons.keyboard_arrow_right_rounded,
+                        color: themeData.colorScheme.secondaryTextColor),
+                    const SizedBox(width: 7),
+                  ],
+                ),
               ),
             ),
           );
@@ -774,8 +786,6 @@ class PopupMenuContentState extends State<PopupMenuContent>
                   },
                   child: Container(
                     width: double.maxFinite,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppValues.screenPadding),
                     decoration: BoxDecoration(
                         color: themeData.colorScheme.background,
                         borderRadius: BorderRadius.circular(24),
@@ -850,6 +860,9 @@ class PopupMenuContentState extends State<PopupMenuContent>
                             ), */
                             const SizedBox(height: 10),
                             SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: AppValues.screenPadding),
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: [
